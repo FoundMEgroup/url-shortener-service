@@ -3,7 +3,7 @@
 namespace BertMaurau\URLShortener\Middlewares;
 
 use BertMaurau\URLShortener\Core AS Core;
-use BertMaurau\URLShortener\Models AS Core;
+use BertMaurau\URLShortener\Models AS Models;
 use BertMaurau\URLShortener\Modules AS Modules;
 
 /**

@@ -54,6 +54,12 @@ class Config
      */
     private $paths;
 
+    /**
+     * Hash IDs
+     * @var stdClass
+     */
+    private $hashId;
+
     public function __construct()
     {
         // load the .env
@@ -96,6 +102,7 @@ class Config
                     'token'    => getenv('JWT_SECRET'),
                     'password' => getenv('PASSWORD_SALT'),
         ];
+
         // load the paths-config
         $this -> paths = (object) [
                     'statics'     => __DIR__ . '/..' . getenv('PATH_STATICS'),
@@ -103,6 +110,13 @@ class Config
                     'images'      => __DIR__ . '/..' . getenv('PATH_STATICS_IMAGES'),
                     'images_url'  => getenv('BASE_URL') . getenv('PATH_STATICS_IMAGES'),
                     'base_url'    => getenv('BASE_URL'),
+        ];
+
+        // load the salts-config
+        $this -> hashId = (object) [
+                    'seed'     => getenv('HASH_ID_SEED'),
+                    'length'   => getenv('HASH_ID_LENGTH'),
+                    'alphabet' => getenv('HASH_ID_ALPHABET'),
         ];
     }
 
@@ -170,6 +184,15 @@ class Config
     public function Paths()
     {
         return $this -> paths;
+    }
+
+    /**
+     * Return the hashId-config
+     * @return object
+     */
+    public function HashId()
+    {
+        return $this -> hashId;
     }
 
     /**

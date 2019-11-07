@@ -22,8 +22,8 @@ $route -> map('GET', '/', function(ServerRequestInterface $request, ResponseInte
  * =============================================================================
  */
 // get the URL (by the short code)
-$route -> map('GET', '/s/{urlCode}', [new Controllers\UrlController, 'getByUrlCode']);
-$route -> map('POST', '/s/{urlCode}', [new Controllers\UrlController, 'getByUrlCode']);
+$route -> map('GET', '/{urlCode}', [new Controllers\UrlController, 'getByUrlCode']);
+$route -> map('POST', '/{urlCode}', [new Controllers\UrlController, 'getByUrlCode']);
 
 // get the URL (by the alias code)
 $route -> map('GET', '/a/{urlAlias}', [new Controllers\UrlController, 'getByUrlAlias']);

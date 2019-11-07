@@ -1,5 +1,9 @@
 <?php
 
+namespace BertMaurau\URLShortener;
+
+use BertMaurau\URLShortener\Core AS Core;
+
 /**
  * -----------------------------------------------------------------------------
  *
