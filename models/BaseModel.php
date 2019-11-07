@@ -74,7 +74,7 @@ class BaseModel
      * Deleted At
      * @var DateTime
      */
-    public $deleted_at;
+    private $deleted_at;
 
     /**
      * Updated At
@@ -201,16 +201,17 @@ class BaseModel
      *
      * @return $this
      */
-    public function addAttribute($property, $value)
+    public function addAttribute(string $property, $value)
     {
         $this -> attributes[$property] = $value;
+
         return $this;
     }
 
     /**
      * Get model by ID
      *
-     * @param integer $id The ID
+     * @param int $id The ID
      *
      * @return $this
      */
@@ -233,9 +234,9 @@ class BaseModel
     /**
      * Get model by specific field
      *
-     * @param array $filter List of fields to filter on
-     * @param integer $take Pagination take
-     * @param integer $skip Pagination skip
+     * @param array $fieldsWithValues List of fields to filter on
+     * @param int $take Pagination take
+     * @param int $skip Pagination skip
      *
      * @return $this
      */
@@ -275,12 +276,12 @@ class BaseModel
      * Get all Models (deprecated in favor of findBy)
      *
      * @param array $filter List of fields to filter on
-     * @param integer $take Pagination take
-     * @param integer $skip Pagination skip
+     * @param int $take Pagination take
+     * @param int $skip Pagination skip
      *
      * @return array
      */
-    public function getAll(array $filter = [], int $take = 120, int $skip = 0)
+    public function getAll(array $filter = [], int $take = 120, int $skip = 0): array
     {
         // Build WHERE conditions
         $conditions = array();
@@ -407,9 +408,9 @@ class BaseModel
     /**
      * Get ID
      *
-     * @return integer ID
+     * @return int ID
      */
-    public function getId()
+    public function getId(): int
     {
         return $this -> id;
     }
@@ -417,9 +418,9 @@ class BaseModel
     /**
      * Get Deleted At
      *
-     * @return DateTime Deleted At
+     * @return \DateTime Deleted At
      */
-    public function getDeletedAt()
+    public function getDeletedAt(): \DateTime
     {
         return $this -> deleted_at;
     }
@@ -427,9 +428,9 @@ class BaseModel
     /**
      * Get Updated At
      *
-     * @return DateTime Updated At
+     * @return \DateTime Updated At
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): \DateTime
     {
         return $this -> updated_at;
     }
@@ -437,9 +438,9 @@ class BaseModel
     /**
      * Get Created At
      *
-     * @return DateTime Created At
+     * @return \DateTime Created At
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTime
     {
         return $this -> created_at;
     }
@@ -447,7 +448,7 @@ class BaseModel
     /**
      * Set ID
      *
-     * @param integer $id id
+     * @param int $id id
      *
      * @return $this
      */
@@ -476,7 +477,7 @@ class BaseModel
             } catch (\Exception $ex) {
                 throw new \Exception("Could not parse given timestamp (BaseModel::deletedAt).");
             }
-            $this -> deletedAt = $dt;
+            $this -> deleted_at = $dt;
         }
 
         return $this;
@@ -500,7 +501,7 @@ class BaseModel
             } catch (\Exception $ex) {
                 throw new \Exception("Could not parse given timestamp (BaseModel::updatedAt).");
             }
-            $this -> updatedAt = $dt;
+            $this -> updated_at = $dt;
         }
 
         return $this;
@@ -524,7 +525,7 @@ class BaseModel
             } catch (\Exception $ex) {
                 throw new \Exception("Could not parse given timestamp (BaseModel::createdAt).");
             }
-            $this -> createdAt = $dt;
+            $this -> created_at = $dt;
         }
 
         return $this;

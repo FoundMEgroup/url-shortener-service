@@ -10,42 +10,57 @@ namespace BertMaurau\URLShortener\Models;
 class UserAuthToken extends BaseModel
 {
 
+    // The name of the database table
+    const DB_TABLE = "user_auth_tokens";
+    // Define what the primary key is
+    const PRIMARY_KEY = "id";
+    // Allowed filter params for the get requests
+    const FILTERS = [];
+    // Does the table have timestamps? (created_at, updated_at, deleted_at)
+    const TIMESTAMPS = true;
+    // Use soft deletes?
+    const SOFT_DELETES = true;
+    // Validation rules
+    const VALIDATION = [];
+    // list of updatable fields
+    const UPDATABLE = ['is_active' => ''];
+
     /**
      * User ID
      * @var int
      */
-    private $userId;
+    private $user_id;
 
     /**
      * UID
      * @var string
      */
-    private $uid;
+    public $uid;
 
     /**
      * Environment
      * @var string
      */
-    private $env;
+    public $env;
 
     /**
      * Expires At
      * @var DateTime
      */
-    private $expiresAt;
+    public $expires_at;
 
     /**
      * Is Active
-     * @var boolean
+     * @var bool
      */
-    private $isActive;
+    public $is_active;
 
     /**
      * Check if token is expired
      *
-     * @return boolean Expired
+     * @return bool Expired
      */
-    public function isExpired()
+    public function isExpired(): bool
     {
         return (new \DateTime() > $this -> getExpiresAt());
     }
@@ -53,9 +68,9 @@ class UserAuthToken extends BaseModel
     /**
      * Check if token is disabled
      *
-     * @return boolean Disabled
+     * @return bool Disabled
      */
-    public function isDisabled()
+    public function isDisabled(): bool
     {
         return !$this -> getIsActive();
     }
@@ -63,28 +78,28 @@ class UserAuthToken extends BaseModel
     /**
      * Check if token is active
      *
-     * @return boolean Active
+     * @return bool Active
      */
-    public function isActive()
+    public function isActive(): bool
     {
         return $this -> getIsActive();
     }
 
     /**
      * Get User ID
-     * @return int The User ID
+     * @return int User ID
      */
-    public function getUserId()
+    public function getUserId(): int
     {
-        return $this -> userId;
+        return $this -> user_id;
     }
 
     /**
      * Get UID
      *
-     * @return string The UID
+     * @return string UID
      */
-    public function getUid()
+    public function getUid(): string
     {
         return $this -> uid;
     }
@@ -92,9 +107,9 @@ class UserAuthToken extends BaseModel
     /**
      * Get Env
      *
-     * @return string The Environment
+     * @return string Env
      */
-    public function getEnv()
+    public function getEnv(): string
     {
         return $this -> env;
     }
@@ -102,21 +117,21 @@ class UserAuthToken extends BaseModel
     /**
      * Get Expires At
      *
-     * @return DateTime The Expires At datetime
+     * @return DateTime Expires At
      */
-    public function getExpiresAt()
+    public function getExpiresAt(): \DateTime
     {
-        return $this -> expiresAt;
+        return $this -> expires_at;
     }
 
     /**
      * Get Is Active
      *
-     * @return boolean The Active flag
+     * @return bool Is Active
      */
-    public function getIsActive()
+    public function getIsActive(): bool
     {
-        return $this -> isActive;
+        return $this -> is_active;
     }
 
     /**
@@ -126,9 +141,10 @@ class UserAuthToken extends BaseModel
      *
      * @return $this
      */
-    public function setUserId(int $userId)
+    public function setUserId(int $userId): UserAuthToken
     {
-        $this -> userId = $userId;
+        $this -> user_id = $userId;
+
         return $this;
     }
 
@@ -139,7 +155,7 @@ class UserAuthToken extends BaseModel
      *
      * @return $this
      */
-    public function setUid(string $uid)
+    public function setUid(string $uid): UserAuthToken
     {
         $this -> uid = $uid;
 
@@ -153,7 +169,7 @@ class UserAuthToken extends BaseModel
      *
      * @return $this
      */
-    public function setEnv(string $env)
+    public function setEnv(string $env): UserAuthToken
     {
         $this -> env = $env;
 
@@ -169,7 +185,7 @@ class UserAuthToken extends BaseModel
      *
      * @throws \Exception
      */
-    public function setExpiresAt(string $expiresAt)
+    public function setExpiresAt(string $expiresAt): UserAuthToken
     {
         // parse timestamp to a DateTime instance
         if ($expiresAt) {
@@ -178,7 +194,7 @@ class UserAuthToken extends BaseModel
             } catch (\Exception $ex) {
                 throw new \Exception("Could not parse given timestamp (UserAuthToken::expiresAt).");
             }
-            $this -> expiresAt = $dt;
+            $this -> expires_at = $dt;
         }
 
         return $this;
@@ -191,9 +207,9 @@ class UserAuthToken extends BaseModel
      *
      * @return $this
      */
-    public function setIsActive($isActive)
+    public function setIsActive($isActive): UserAuthToken
     {
-        $this -> isActive = (boolean) $isActive;
+        $this -> is_active = (boolean) $isActive;
 
         return $this;
     }

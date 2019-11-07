@@ -12,9 +12,6 @@ use BertMaurau\URLShortener\Core as Core;
 class LogRequest extends BaseModel
 {
 
-    // |------------------------------------------------------------------------
-    // |  Model Configuration
-    // |------------------------------------------------------------------------
     // Reference to the Database table
     const DB_TABLE = "log_requests";
     // Define what is the primary key
@@ -30,212 +27,232 @@ class LogRequest extends BaseModel
     // list of updatable fields
     const UPDATABLE = [];
 
-    // |------------------------------------------------------------------------
-    // |  Properties
-    // |------------------------------------------------------------------------
-    // integer
+    /**
+     * User ID
+     * @var integer
+     */
     public $user_id;
-    // string
+
+    /**
+     * Verb
+     * @var string
+     */
     public $verb;
-    // string
+
+    /**
+     * URI
+     * @var string
+     */
     public $uri;
-    // string
+
+    /**
+     * Payload
+     * @var string
+     */
     public $payload;
-    // string
+
+    /**
+     * Headers
+     * @var string
+     */
     public $headers;
-    // string
+
+    /**
+     * Remote Address
+     * @var string
+     */
     public $remote_address;
 
-    // |------------------------------------------------------------------------
-    // |  Model Functions
-    // |------------------------------------------------------------------------
     /**
      * Register the incoming request
+     *
      * @return void
      */
-    public static function registerRequest()
+    public static function register()
     {
 
         // get the info about the request
         $verb = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
         $uri = filter_input(INPUT_SERVER, 'REQUEST_URI');
-        $payload = file_get_contents('php://input');
-        $rawHeaders = getallheaders();
-        $headersJson = json_encode($rawHeaders);
+        $rawPayload = json_encode(file_get_contents('php://input'));
+        $rawHeaders = json_encode(getallheaders());
         $remoteAddress = Core\Auth::getRemoteAddress();
 
         // cleanup excessive payloads
-        if (strpos($payload, 'password') !== false) {
-            $payload = '--SCREENED--';
+        if (strpos($rawPayload, 'password') !== false) {
+            $rawPayload = '--SCREENED--';
         }
-        if (strpos($payload, 'base64') !== false) {
-            $payload = '--CLEANED--';
+        if (strpos($rawPayload, 'base64') !== false) {
+            $rawPayload = '--CLEANED--';
         }
 
         $userId = null;
 
-        // check for headers and get user id
-        if ($rawHeaders && isset($rawHeaders['Authorization']) && strpos($rawHeaders['Authorization'], 'Bearer') !== false) {
-            // get the token
-            try {
-                $headers = null;
-                if (isset($_SERVER['Authorization'])) {
-                    $headers = trim($_SERVER["Authorization"]);
-                } else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { // Nginx or fast CGI
-                    $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
-                } elseif (function_exists('apache_request_headers')) {
-                    $requestHeaders = apache_request_headers();
+        try {
+            $token = Core\Auth::getBearerToken();
 
-                    // Server-side fix for bug in old Android versions (a nice side-effect of
-                    // this fix means we don't care about capitalization for Authorization)
-                    $requestHeaders = array_combine(array_map('ucwords', array_keys($requestHeaders)), array_values($requestHeaders));
-                    if (isset($requestHeaders['Authorization'])) {
-                        $headers = trim($requestHeaders['Authorization']);
-                    }
-                }
+            if ($token && $token != "") {
+                $tokenData = (object) json_decode(Modules\JWT::decode($token, Core\Config::getInstance() -> Salts() -> token));
 
-                if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
-                    $token = $matches[1];
-
-                    // why does it even get here when there is no token in header??????
-                    if ($token && $token != "") {
-                        $tokenProperties = (object) json_decode(\JWT::decode($token, Core\Config::getInstance() -> Salts() -> token));
-                        $userId = isset($tokenProperties -> userId) ? (int) $tokenProperties -> userId : null;
-                    }
-                }
-            } catch (\Exception $ex) {
-
+                $userId = isset($tokenData -> userId) ? (int) $tokenData -> userId : null;
             }
+        } catch (Exception $ex) {
+
         }
 
-        $log = (new LogRequest)
-                -> setUser_id($userId)
+        (new self)
+                -> setUserId($userId)
                 -> setVerb($verb)
                 -> setUri($uri)
-                -> setPayload($payload)
-                -> setHeaders($headersJson)
-                -> setRemote_address($remoteAddress)
+                -> setPayload($rawPayload)
+                -> setHeaders($rawHeaders)
+                -> setRemoteAddress($remoteAddress)
                 -> insert();
         return;
     }
 
-    // |------------------------------------------------------------------------
-    // |  Getters
-    // |------------------------------------------------------------------------
-
-    public function getUser_id()
+    /**
+     * Get User ID
+     *
+     * @return int User ID
+     */
+    public function getUserId(): int
     {
         return $this -> user_id;
     }
 
     /**
-     * Get verb
-     * @return string
+     * Get Verb
+     *
+     * @return string Verb
      */
-    public function getVerb()
+    public function getVerb(): string
     {
         return $this -> verb;
     }
 
     /**
-     * Get uri
-     * @return string
+     * Get URI
+     *
+     * @return string URI
+     *
      */
-    public function getUri()
+    public function getUri(): string
     {
         return $this -> uri;
     }
 
     /**
-     * Get payload
-     * @return string
+     * Get p]Payload
+     *
+     * @return string Payload
      */
-    public function getPayload()
+    public function getPayload(): string
     {
         return $this -> payload;
     }
 
     /**
-     * Get headers
-     * @return string
+     * Get Headers
+     *
+     * @return string Headers
      */
-    public function getHeaders()
+    public function getHeaders(): string
     {
         return $this -> headers;
     }
 
     /**
-     * Get remote_address
-     * @return string
+     * Get Remote Address
+     *
+     * @return string Remote Address
      */
-    public function getRemote_address()
+    public function getRemoteAddress(): string
     {
         return $this -> remote_address;
     }
 
-    // |------------------------------------------------------------------------
-    // |  Setters
-    // |------------------------------------------------------------------------
-
-
-    public function setUser_id($user_id)
+    /**
+     * Set User ID
+     *
+     * @param int $userId user_id
+     *
+     * @return $this
+     */
+    public function setUserId(int $userId = null): LogRequest
     {
-        $this -> user_id = (int) $user_id;
+        $this -> user_id = $userId;
+
         return $this;
     }
 
     /**
-     * Set verb
-     * @param string $verb
+     * Set Verb
+     *
+     * @param string $verb verb
+     *
      * @return $this
      */
-    public function setVerb($verb)
+    public function setVerb(string $verb): LogRequest
     {
-        $this -> verb = (string) $verb;
+        $this -> verb = $verb;
+
         return $this;
     }
 
     /**
-     * Set uri
-     * @param string $uri
+     * Set URI
+     *
+     * @param string $uri uri
+     *
      * @return $this
      */
-    public function setUri($uri)
+    public function setUri(string $uri): LogRequest
     {
-        $this -> uri = (string) $uri;
+        $this -> uri = $uri;
+
         return $this;
     }
 
     /**
-     * Set payload
-     * @param string $payload
+     * Set Payload
+     *
+     * @param string $payload payload
+     *
      * @return $this
      */
-    public function setPayload($payload)
+    public function setPayload(string $payload): LogRequest
     {
-        $this -> payload = (string) $payload;
+        $this -> payload = $payload;
+
         return $this;
     }
 
     /**
-     * Set headers
-     * @param string $headers
+     * Set Headers
+     *
+     * @param string $headers headers
+     *
      * @return $this
      */
-    public function setHeaders($headers)
+    public function setHeaders(string $headers): LogRequest
     {
-        $this -> headers = (string) $headers;
+        $this -> headers = $headers;
+
         return $this;
     }
 
     /**
-     * Set remote_address
-     * @param string $remote_address
+     * Set Remote Address
+     *
+     * @param string $remoteAddress remote_address
+     *
      * @return $this
      */
-    public function setRemote_address($remote_address)
+    public function setRemoteAddress(string $remoteAddress): LogRequest
     {
-        $this -> remote_address = (string) $remote_address;
+        $this -> remote_address = $remoteAddress;
+
         return $this;
     }
 

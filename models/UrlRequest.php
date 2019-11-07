@@ -3,15 +3,15 @@
 namespace BertMaurau\URLShortener\Models;
 
 /**
- * Description of UrlAlias
+ * Description of UrlRequest
  *
  * @author bertmaurau
  */
-class UrlAlias extends BaseModel
+class UrlRequest extends BaseModel
 {
 
     // The name of the database table
-    const DB_TABLE = "url_aliasses";
+    const DB_TABLE = "url_requests";
     // Define what the primary key is
     const PRIMARY_KEY = "id";
     // Allowed filter params for the get requests
@@ -21,23 +21,21 @@ class UrlAlias extends BaseModel
     // Use soft deletes?
     const SOFT_DELETES = true;
     // Validation rules
-    const VALIDATION = [
-        'alias' => [true, 'string', 1, 128],
-    ];
+    const VALIDATION = [];
     // list of updatable fields
-    const UPDATABLE = ['alias' => ''];
+    const UPDATABLE = [];
 
     /**
      * Url ID
-     * @var int
+     * @var integer
      */
     private $url_id;
 
     /**
-     * Alias
+     * Remote Address
      * @var string
      */
-    public $alias;
+    public $remote_address;
 
     /**
      * Get URL ID
@@ -50,13 +48,13 @@ class UrlAlias extends BaseModel
     }
 
     /**
-     * Get Alias
+     * Get Remote Address
      *
-     * @return string Alias
+     * @return string Remote Address
      */
-    public function getAlias(): string
+    public function getRemoteAddress(): string
     {
-        return $this -> alias;
+        return $this -> remote_address;
     }
 
     /**
@@ -66,7 +64,7 @@ class UrlAlias extends BaseModel
      *
      * @return $this
      */
-    public function setUrlId(int $urlId): UrlAlias
+    public function setUrlId(int $urlId): UrlRequest
     {
         $this -> url_id = $urlId;
 
@@ -74,15 +72,15 @@ class UrlAlias extends BaseModel
     }
 
     /**
-     * Set Alias
+     * Set Remote Address
      *
-     * @param string $alias Alias
+     * @param string $remoteAddress remote_address
      *
      * @return $this
      */
-    public function setAlias(string $alias): UrlAlias
+    public function setRemoteAddress(string $remoteAddress): UrlRequest
     {
-        $this -> alias = $alias;
+        $this -> remote_address = $remoteAddress;
 
         return $this;
     }
