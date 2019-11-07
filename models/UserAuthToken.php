@@ -86,6 +86,37 @@ class UserAuthToken extends BaseModel
     }
 
     /**
+     * Register a new Auth Token for given User ID
+     *
+     * @param int $userId User ID
+     * @param string $env Env
+     *
+     * @return UserAuthToken
+     */
+    public static function createForUser(int $userId, string $env): UserAuthToken
+    {
+        return (new self)
+                        -> setUserId($userId)
+                        -> setIsActive(true)
+                        -> setEnv($env)
+                        -> setUid(self::generateUid($userId, $env))
+                        -> insert();
+    }
+
+    /**
+     * Generate UID
+     *
+     * @param int $userId User ID
+     * @param string $env Env
+     *
+     * @return string UID
+     */
+    private static function generateUid(int $userId, string $env): string
+    {
+        return md5($userId . $env . time());
+    }
+
+    /**
      * Get User ID
      * @return int User ID
      */

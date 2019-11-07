@@ -7,7 +7,7 @@
         "phpmailer/phpmailer": "dev-master",
         "zendframework/zend-diactoros": "^2.1@dev",
         "lasserafn/php-initial-avatar-generator": "dev-master",
-        "league/route": "2.x-dev",
+        "league/route": "3.x-dev",
         "hashids/hashids": "^4.0@dev"
     },
     "license": "MIT",

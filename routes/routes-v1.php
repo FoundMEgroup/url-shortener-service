@@ -12,6 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
 // -----------------------------------------------------------------------------
 // Index
 $route -> map('GET', '/', function(ServerRequestInterface $request, ResponseInterface $response) {
+
     // You can do whatever you want here, This route is not required or anything.
     return Core\Output::OK($response, date('Y-m-d H:i:s'));
 });
@@ -22,8 +23,8 @@ $route -> map('GET', '/', function(ServerRequestInterface $request, ResponseInte
  * =============================================================================
  */
 // get the URL (by the short code)
-$route -> map('GET', '/{urlCode}', [new Controllers\UrlController, 'getByUrlCode']);
-$route -> map('POST', '/{urlCode}', [new Controllers\UrlController, 'getByUrlCode']);
+$route -> map('GET', '/c/{urlCode}', [new Controllers\UrlController, 'getByUrlCode']);
+$route -> map('POST', '/c/{urlCode}', [new Controllers\UrlController, 'getByUrlCode']);
 
 // get the URL (by the alias code)
 $route -> map('GET', '/a/{urlAlias}', [new Controllers\UrlController, 'getByUrlAlias']);
@@ -32,6 +33,7 @@ $route -> map('POST', '/a/{urlAlias}', [new Controllers\UrlController, 'getByUrl
 
 // Validate the given Login
 $route -> map('POST', '/my/login', [new Controllers\UserController, 'postLogin']);
+
 
 /**
  * =============================================================================

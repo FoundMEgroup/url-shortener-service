@@ -2,6 +2,8 @@
 
 namespace BertMaurau\URLShortener\Core;
 
+use BertMaurau\URLShortener\Models AS Models;
+
 /**
  * Description of Auth
  *
@@ -98,9 +100,17 @@ class Auth
         return $token;
     }
 
-    public static function validateTokenForUserId(string $authToken, int $userId)
+    /**
+     * Find the provided token for given User
+     *
+     * @param string $tokenUid Token UID
+     * @param int $userId User ID
+     *
+     * @return Models\UserAuthToken
+     */
+    public static function findTokenForUserId(string $tokenUid, int $userId): Models\UserAuthToken
     {
-
+        return (new Models\UserAuthToken) -> findBy(['uid' => $tokenUid, 'user_id' => $userId], $take = 1);
     }
 
     /**

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9c3d8db33446d02cf07215d346a8d13d",
+    "content-hash": "04172415130c7ad012cd71b302ad1b5b",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -457,22 +457,23 @@
         },
         {
             "name": "league/route",
-            "version": "2.x-dev",
+            "version": "3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/route.git",
-                "reference": "0d268d1af12dcd5f3f402645d7460a6e9cb97fbd"
+                "reference": "89f3827baa77cba14590e405c15167cad418f781"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/route/zipball/0d268d1af12dcd5f3f402645d7460a6e9cb97fbd",
-                "reference": "0d268d1af12dcd5f3f402645d7460a6e9cb97fbd",
+                "url": "https://api.github.com/repos/thephpleague/route/zipball/89f3827baa77cba14590e405c15167cad418f781",
+                "reference": "89f3827baa77cba14590e405c15167cad418f781",
                 "shasum": ""
             },
             "require": {
-                "league/container": "^2.0",
-                "nikic/fast-route": "^0.7",
+                "league/container": "^2.4",
+                "nikic/fast-route": "^1.0|^0.8|^0.7",
                 "php": ">=5.4.0",
+                "psr/container": "^1.0",
                 "psr/http-message": "^1.0"
             },
             "replace": {
@@ -480,14 +481,15 @@
                 "orno/route": "~1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.0"
+                "phpunit/phpunit": "^4.8.35"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.x-dev",
-                    "2.x": "2.x-dev",
-                    "1.x": "1.x-dev"
+                    "dev-master": "4.x-dev",
+                    "dev-3.x": "3.x-dev",
+                    "dev-2.x": "2.x-dev",
+                    "dev-1.x": "1.x-dev"
                 }
             },
             "autoload": {
@@ -516,7 +518,7 @@
                 "psr7",
                 "route"
             ],
-            "time": "2018-07-23T13:00:07+00:00"
+            "time": "2018-07-23T13:13:54+00:00"
         },
         {
             "name": "meyfa/php-svg",

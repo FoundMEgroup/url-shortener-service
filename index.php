@@ -78,18 +78,20 @@ $route = new \League\Route\RouteCollection;
 require __DIR__ . '/routes/routes-v1.php';
 
 try {
-    $response = $route -> dispatch(
-            $container -> get('request'), $container -> get('response'));
+    $response = $route -> dispatch($container -> get('request'), $container -> get('response'));
 } catch (\League\Route\Http\Exception\NotFoundException $exception) {
     $response = Core\Output::NotFound(Core\Output::Clear(), 'Route not found.');
 } catch (\League\Route\Http\Exception\MethodNotAllowedException $exception) {
     $response = Core\Output::Conflict(Core\Output::Clear(), 'Method not allowed.');
 }
 
-// sends headers and output using PHPs standard SAPI mechanisms
-$container -> get('emitter') -> emit(
-        $response -> withHeader('Content-Type', 'application/json'));
+// sends headers and output using PHP's standard SAPI mechanisms
+try {
+    $container -> get('emitter') -> emit(
+            $response -> withAddedHeader('Content-Type', 'application/json'));
+} catch (\RuntimeException $ex) {
 
+}
 // -----------------------------------------------------------------------------
 // end of script
 
