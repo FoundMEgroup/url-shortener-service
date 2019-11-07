@@ -1,0 +1,20 @@
+{
+    "name": "bertmaurau/php-url-shortener",
+    "description": "A URL shortener/alias service with tracking.",
+    "type": "project",
+    "require": {
+        "vlucas/phpdotenv": "^4.0@dev",
+        "phpmailer/phpmailer": "dev-master",
+        "zendframework/zend-diactoros": "^2.1@dev",
+        "lasserafn/php-initial-avatar-generator": "dev-master",
+        "league/route": "2.x-dev"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bert Maurau",
+            "email": "hello@bertmaurau.be"
+        }
+    ],
+    "minimum-stability": "dev"
+}
