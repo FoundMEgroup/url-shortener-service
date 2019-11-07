@@ -51,6 +51,15 @@ class Database
      */
     public static function escape($value)
     {
+        // fallback
+        if (is_object($value) || is_array($value)) {
+            if ($value instanceof \DateTime) {
+                $value = $value -> format('Y-m-d H:i:s');
+            } else {
+                // just encode it..
+                $value = json_encode($value);
+            }
+        }
         return self::$mysqli -> real_escape_string($value);
     }
 

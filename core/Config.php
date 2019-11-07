@@ -93,8 +93,8 @@ class Config
 
         // load the token-config
         $this -> token = (object) [
-                    'urlGetParameterAllowed'   => getenv('URL_GET_TOKEN_ALLOWED'),
-                    'urlGetParameterParameter' => getenv('URL_GET_TOKEN_PARAMETER'),
+                    'urlGetParameterAllowed' => getenv('URL_GET_TOKEN_ALLOWED'),
+                    'urlGetParameter'        => getenv('URL_GET_TOKEN_PARAMETER'),
         ];
 
         // load the salts-config

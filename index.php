@@ -48,7 +48,7 @@ require 'require.php';
 
 // log any incoming requests
 try {
-    Models\LogRequest::registerRequest();
+    Models\LogRequest::register();
 } catch (\Exception $ex) {
     // do something
 }

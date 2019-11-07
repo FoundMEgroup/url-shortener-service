@@ -88,10 +88,10 @@ class Auth
         } else {
 
             // check if it is allowed to use the token as a GET parameter
-            if (Core\Config::getInstance() -> Token() -> urlGetParameterAllowed) {
+            if (Config::getInstance() -> Token() -> urlGetParameterAllowed) {
 
                 // get the token via the configured GET parameter
-                $token = filter_input(INPUT_GET, Core\Config::getInstance() -> Token() -> urlGetParameter);
+                $token = filter_input(INPUT_GET, Config::getInstance() -> Token() -> urlGetParameter);
             }
         }
 
