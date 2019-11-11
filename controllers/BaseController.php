@@ -24,7 +24,15 @@ class BaseController
 
     const MODEL_NAME = 'BertMaurau\\URLShortener\\Models\\' . "";
 
-    // Handle the main index GET
+    /**
+     * Get all resources
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param array $args
+     *
+     * @return ResponseInterface
+     */
     public function index(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         // Get the current ModelName to init a class.
@@ -39,7 +47,15 @@ class BaseController
         return Core\Output::OK($response, $models);
     }
 
-    // Handle model request
+    /**
+     * Get a specific resource
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param array $args
+     *
+     * @return ResponseInterface
+     */
     public function show(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         // Get the current ModelName to init a class.
@@ -70,7 +86,15 @@ class BaseController
         return Core\Output::OK($response, $model);
     }
 
-    // Handle the create request
+    /**
+     * Create a new resource
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param array $args
+     *
+     * @return ResponseInterface
+     */
     public function create(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         // Get the current ModelName to init a class.
@@ -97,7 +121,15 @@ class BaseController
         return Core\Output::OK($response, $model);
     }
 
-    // Handle an update request
+    /**
+     * Update a specific resource
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param array $args
+     *
+     * @return ResponseInterface
+     */
     public function update(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         // Get the current ModelName to init a class.
@@ -147,7 +179,15 @@ class BaseController
         return Core\Output::OK($response, $model);
     }
 
-    // Handle a delete request
+    /**
+     * Delete a specific resource
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param array $args
+     *
+     * @return ResponseInterface
+     */
     public function delete(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         // Get the current ModelName to init a class.

@@ -39,6 +39,21 @@ class Url extends BaseModel
      */
     public $url;
 
+    public function redirectToUrl()
+    {
+        if (!headers_sent()) {
+            header("Location: {$this -> getUrl()}");
+        } else {
+            echo '<script type="text/javascript">';
+            echo 'window.location.href="' . $this -> getUrl() . '";';
+            echo '</script>';
+            echo '<noscript>';
+            echo '<meta http-equiv="refresh" content="0;url=' . $this -> getUrl() . '" />';
+            echo '</noscript>';
+        }
+        exit();
+    }
+
     /**
      * Get Short Code
      *
