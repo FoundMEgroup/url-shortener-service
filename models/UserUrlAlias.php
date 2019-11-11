@@ -29,7 +29,7 @@ class UserUrlAlias extends BaseModel
      * User ID
      * @var int
      */
-    private $user_id;
+    protected $user_id;
 
     /**
      * URL Alias ID

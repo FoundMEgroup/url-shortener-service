@@ -56,13 +56,13 @@ class User extends BaseModel
      * Password
      * @var string
      */
-    private $password;
+    protected $password;
 
     /**
      * Validated At
      * @var DateTime
      */
-    private $validated_at;
+    protected $validated_at;
 
     /**
      * Validate the given password for requested User ID

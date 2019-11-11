@@ -29,13 +29,13 @@ class UserUrl extends BaseModel
      * User ID
      * @var int
      */
-    private $userId;
+    protected $user_id;
 
     /**
      * URL ID
      * @var int
      */
-    public $urlId;
+    public $url_id;
 
     /**
      * Get User ID

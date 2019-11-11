@@ -31,7 +31,7 @@ class UrlAlias extends BaseModel
      * Url ID
      * @var int
      */
-    private $url_id;
+    protected $url_id;
 
     /**
      * Alias

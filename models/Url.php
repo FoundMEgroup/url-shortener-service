@@ -39,6 +39,9 @@ class Url extends BaseModel
      */
     public $url;
 
+    /**
+     * Redirect to the URL and exit script
+     */
     public function redirectToUrl()
     {
         if (!headers_sent()) {
