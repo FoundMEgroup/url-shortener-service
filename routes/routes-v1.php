@@ -30,6 +30,8 @@ $route -> map('POST', '/c/{urlCode}', [new Controllers\UrlController, 'getByUrlC
 $route -> map('GET', '/a/{urlAlias}', [new Controllers\UrlController, 'getByUrlAlias']);
 $route -> map('POST', '/a/{urlAlias}', [new Controllers\UrlController, 'getByUrlAlias']);
 
+// generate new anonymous url
+$route -> map('POST', '/urls', [new Controllers\UrlController, 'create']);
 
 // Validate the given Login
 $route -> map('POST', '/my/login', [new Controllers\UserController, 'postLogin']);
