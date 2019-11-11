@@ -28,6 +28,12 @@ class LogRequest extends BaseModel
     const UPDATABLE = [];
 
     /**
+     * LogRequest
+     * @var LogRequest
+     */
+    private static $instance;
+
+    /**
      * User ID
      * @var integer
      */
@@ -100,7 +106,7 @@ class LogRequest extends BaseModel
 
         }
 
-        (new self)
+        $_logRequest = (new self)
                 -> setUserId($userId)
                 -> setVerb($verb)
                 -> setUri($uri)
@@ -108,7 +114,23 @@ class LogRequest extends BaseModel
                 -> setHeaders($rawHeaders)
                 -> setRemoteAddress($remoteAddress)
                 -> insert();
+
+        self::$instance = $_logRequest;
+
         return;
+    }
+
+    /**
+     * Create a new instance
+     *
+     * @return instance
+     */
+    public static function getInstance()
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
     /**
