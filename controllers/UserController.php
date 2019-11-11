@@ -19,17 +19,8 @@ class UserController extends BaseController
 
         // define required arguments/values
         $validationFields = [
-            [
-                'method'   => 'POST',
-                'field'    => 'email',
-                'type'     => 'email',
-                'required' => true,
-            ], [
-                'method'   => 'POST',
-                'field'    => 'password',
-                'type'     => 'string',
-                'required' => true,
-            ],
+            ['method' => Core\ValidatedRequest::METHOD_POST, 'field' => 'email', 'type' => Core\ValidatedRequest::TYPE_EMAIL, 'required' => true,],
+            ['method' => Core\ValidatedRequest::METHOD_POST, 'field' => 'password', 'type' => Core\ValidatedRequest::TYPE_STRING, 'required' => true,],
         ];
 
         $validatedRequest = Core\ValidatedRequest::validate($request, $response, $validationFields, $args);

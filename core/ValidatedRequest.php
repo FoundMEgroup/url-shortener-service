@@ -13,6 +13,16 @@ use Psr\Http\Message\ServerRequestInterface;
 class ValidatedRequest
 {
 
+    const TYPE_STRING = 'string';
+    const TYPE_INTEGER = 'integer';
+    const TYPE_FLOAT = 'float';
+    const TYPE_URL = 'url';
+    const TYPE_BOOLEAN = 'boolean';
+    const TYPE_EMAIL = 'email';
+    const METHOD_POST = 'POST';
+    const METHOD_GET = 'GET';
+    const METHOD_ARG = 'ARG';
+
     /**
      * Instace
      * @var ValidatedRequest
@@ -56,7 +66,7 @@ class ValidatedRequest
         foreach ($validationFields as $key => $validationField) {
 
             switch ($validationField['method']) {
-                case 'GET':
+                case self::METHOD_GET:
                     if (!isset($_GET[$validationField['field']]) && $validationField['required']) {
                         $instance -> isValid = false;
                         $instance -> output = Output::MissingParameter($response, $validationField['field']);
@@ -64,7 +74,7 @@ class ValidatedRequest
                     }
                     $value = filter_input(INPUT_GET, $validationField['field'], self::getFilterSanitizationType($validationField['type']));
                     break;
-                case 'POST':
+                case self::METHOD_POST:
                     if (!isset($payload[$validationField['field']]) && $validationField['required']) {
                         $instance -> isValid = false;
                         $instance -> output = Output::MissingParameter($response, $validationField['field']);
@@ -72,7 +82,7 @@ class ValidatedRequest
                     }
                     $value = filter_var($payload[$validationField['field']], self::getFilterSanitizationType($validationField['type']));
                     break;
-                case 'ARG':
+                case self::METHOD_ARG:
                     if (!isset($input[$validationField['field']]) && $validationField['required']) {
                         $instance -> isValid = false;
                         $instance -> output = Output::MissingParameter($response, $validationField['field']);
@@ -136,17 +146,17 @@ class ValidatedRequest
     private static function getFilterSanitizationType(string $type): int
     {
         switch ($type) {
-            case 'string':
+            case self::TYPE_STRING:
                 return FILTER_SANITIZE_STRING;
-            case 'integer':
+            case self::TYPE_INTEGER:
                 return FILTER_SANITIZE_NUMBER_INT;
-            case 'float':
+            case self::TYPE_FLOAT:
                 return FILTER_SANITIZE_NUMBER_FLOAT;
-            case 'email':
+            case self::TYPE_EMAIL:
                 return FILTER_SANITIZE_EMAIL;
-            case 'boolean':
+            case self::TYPE_BOOLEAN:
                 return FILTER_VALIDATE_BOOLEAN;
-            case 'url':
+            case self::TYPE_URL:
                 return FILTER_VALIDATE_URL;
             default:
                 return 0;

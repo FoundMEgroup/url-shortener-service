@@ -29,9 +29,7 @@ class UrlController extends BaseController
 
         // define required arguments/values
         $validationFields = [
-            [
-                'method'   => 'POST', 'field'    => 'url', 'type'     => 'url', 'required' => true,
-            ],
+            ['method' => Core\ValidatedRequest::METHOD_POST, 'field' => 'url', 'type' => Core\ValidatedRequest::TYPE_URL, 'required' => true,],
         ];
 
         $validatedRequest = Core\ValidatedRequest::validate($request, $response, $validationFields, $args);
