@@ -31,12 +31,6 @@ class Config
     private $api;
 
     /**
-     * APP
-     * @var stdClass
-     */
-    private $app;
-
-    /**
      * Token
      * @var stdClass
      */
@@ -77,12 +71,6 @@ class Config
                     'root'    => getenv('API_ROOT'),
                     'baseUrl' => getenv('BASE_URL'),
                     'env'     => getenv('ENV'),
-        ];
-
-        // load the api-config
-        $this -> app = (object) [
-                    'root'    => getenv('APP_ROOT'),
-                    'baseUrl' => getenv('BASE_URL'),
         ];
 
         // load the databse-config
@@ -160,15 +148,6 @@ class Config
     public function API()
     {
         return $this -> api;
-    }
-
-    /**
-     * Return the app-config
-     * @return object
-     */
-    public function APP()
-    {
-        return $this -> app;
     }
 
     /**
