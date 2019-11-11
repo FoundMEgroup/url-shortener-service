@@ -87,7 +87,7 @@ class UrlTracker
      *
      * @return \GeoIp2\Model\City
      */
-    private static function getLocationData(string $remoteAddress)
+    public static function getLocationData(string $remoteAddress)
     {
         $reader = new Reader(Config::getInstance() -> Paths() -> statics . 'geo-data/GeoLite2-City.mmdb');
 
