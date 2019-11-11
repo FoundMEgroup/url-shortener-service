@@ -15,7 +15,7 @@ class UrlController extends BaseController
     const MODEL_NAME = 'BertMaurau\\URLShortener\\Models\\' . "Url";
 
     /**
-     * Get the URL by given code
+     * Go to URL by given code or alias
      *
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
@@ -23,11 +23,19 @@ class UrlController extends BaseController
      *
      * @return null
      */
-    public function getByUrlCode(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    public function index(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
+        if (isset($_GET['code'])) {
+            $getField = 'code';
+        } else if (isset($_GET['alias'])) {
+            $getField = 'alias';
+        } else {
+            return Core\Output::MissingParameter($response, 'Missing URL parameter code|alias.');
+        }
+
         // define required arguments/values
         $validationFields = [
-            ['method' => Core\ValidatedRequest::METHOD_ARG, 'field' => 'urlCode', 'type' => Core\ValidatedRequest::TYPE_STRING, 'required' => true,],
+            ['method' => Core\ValidatedRequest::METHOD_GET, 'field' => $getField, 'type' => Core\ValidatedRequest::TYPE_STRING, 'required' => true,],
         ];
 
         $validatedRequest = Core\ValidatedRequest::validate($request, $response, $validationFields, $args);
@@ -37,53 +45,34 @@ class UrlController extends BaseController
 
         $filteredInput = $validatedRequest -> getFilteredInput();
 
-        $url = (new Models\Url) -> findBy(['short_code' => $filteredInput['urlCode']], $take = 1);
-        if (!$url) {
-            return Core\Output::ModelNotFound($response, 'Url', $filteredInput['urlCode'], 'c');
-        }
+        if ($getField === 'alias') {
 
-        // do tracker magic
-        Core\UrlTracker::track(Core\UrlTracker::TYPE_URL, $url -> getId());
+            $urlAlias = (new Models\UrlAlias) -> findBy(['alias' => $filteredInput['alias']], $take = 1);
+            if (!$urlAlias) {
+                return Core\Output::ModelNotFound($response, 'UrlAlias', $filteredInput['alias'], 'a');
+            }
 
-        // url found, code exits.. do redirecting magic
-        $url -> redirectToUrl();
-    }
+            // get the URL for given alias
+            $url = (new Models\Url) -> getById($urlAlias -> getUrlId());
+            if (!$url) {
+                return Core\Output::NotFound($response, 'URL associated with `' . $filteredInput['alias'] . '` not found.');
+            }
 
-    /**
-     * Get the URL by given alias
-     *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param array $args
-     *
-     * @return null
-     */
-    public function getByUrlAlias(ServerRequestInterface $request, ResponseInterface $response, array $args)
-    {
-        // define required arguments/values
-        $validationFields = [
-            ['method' => Core\ValidatedRequest::METHOD_ARG, 'field' => 'urlAlias', 'type' => Core\ValidatedRequest::TYPE_STRING, 'required' => true,],
-        ];
+            // do tracker magic
+            Core\UrlTracker::track(Core\UrlTracker::TYPE_URL_ALIAS, $urlAlias -> getId());
 
-        $validatedRequest = Core\ValidatedRequest::validate($request, $response, $validationFields, $args);
-        if (!$validatedRequest -> isValid()) {
-            return $validatedRequest -> getOutput();
-        }
+            //
+        } else if ($getField === 'code') {
 
-        $filteredInput = $validatedRequest -> getFilteredInput();
+            $url = (new Models\Url) -> findBy(['short_code' => $filteredInput['code']], $take = 1);
+            if (!$url) {
+                return Core\Output::ModelNotFound($response, 'Url', $filteredInput['code'], 'c');
+            }
 
-        $urlAlias = (new Models\UrlAlias) -> findBy(['alias' => $filteredInput['urlAlias']], $take = 1);
-        if (!$urlAlias) {
-            return Core\Output::ModelNotFound($response, 'UrlAlias', $filteredInput['urlAlias'], 'a');
-        }
+            // do tracker magic
+            Core\UrlTracker::track(Core\UrlTracker::TYPE_URL, $url -> getId());
 
-        // do tracker magic
-        Core\UrlTracker::track(Core\UrlTracker::TYPE_URL_ALIAS, $urlAlias -> getId());
-
-        // get the URL for given alias
-        $url = (new Models\Url) -> getById($urlAlias -> getUrlId());
-        if (!$url) {
-            return Core\Output::NotFound($response, 'URL associated with `' . $filteredInput['urlAlias'] . '` not found.');
+            //
         }
 
         // url found, code exits.. do redirecting magic

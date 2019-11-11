@@ -22,13 +22,9 @@ $route -> map('GET', '/', function(ServerRequestInterface $request, ResponseInte
  *  Public
  * =============================================================================
  */
-// get the URL (by the short code)
-$route -> map('GET', '/c/{urlCode}', [new Controllers\UrlController, 'getByUrlCode']);
-$route -> map('POST', '/c/{urlCode}', [new Controllers\UrlController, 'getByUrlCode']);
-
-// get the URL (by the alias code)
-$route -> map('GET', '/a/{urlAlias}', [new Controllers\UrlController, 'getByUrlAlias']);
-$route -> map('POST', '/a/{urlAlias}', [new Controllers\UrlController, 'getByUrlAlias']);
+// get the external url
+$route -> map('GET', '/url', [new Controllers\UrlController, 'index']);
+$route -> map('POST', '/url', [new Controllers\UrlController, 'index']);
 
 // generate new anonymous url
 $route -> map('POST', '/urls', [new Controllers\UrlController, 'create']);
