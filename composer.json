@@ -8,7 +8,8 @@
         "zendframework/zend-diactoros": "dev-release-1.8",
         "lasserafn/php-initial-avatar-generator": "dev-master",
         "league/route": "3.x-dev",
-        "hashids/hashids": "^4.0@dev"
+        "hashids/hashids": "^4.0@dev",
+        "geoip2/geoip2": "~2.0"
     },
     "license": "MIT",
     "authors": [

@@ -2,12 +2,14 @@
 
 namespace BertMaurau\URLShortener\Models;
 
+require_once 'UrlRequest.php';
+
 /**
  * Description of UrlAliasRequest
  *
  * @author bertmaurau
  */
-class UrlAliasRequest extends BaseModel
+class UrlAliasRequest extends UrlRequest
 {
 
     // The name of the database table
@@ -29,13 +31,7 @@ class UrlAliasRequest extends BaseModel
      * Url Alias ID
      * @var int
      */
-    private $url_alias_id;
-
-    /**
-     * Remote Address
-     * @var string
-     */
-    public $remote_address;
+    protected $url_alias_id;
 
     /**
      * Get URL Alias ID
@@ -48,16 +44,6 @@ class UrlAliasRequest extends BaseModel
     }
 
     /**
-     * Get Remote Address
-     *
-     * @return string Remote Address
-     */
-    public function getRemoteAddress(): string
-    {
-        return $this -> remote_address;
-    }
-
-    /**
      * Set URL Alias ID
      *
      * @param int $urlId url_alias_id
@@ -67,20 +53,6 @@ class UrlAliasRequest extends BaseModel
     public function setUrlAliasId(int $urlAliasId): UrlAliasRequest
     {
         $this -> url_alias_id = $urlAliasId;
-
-        return $this;
-    }
-
-    /**
-     * Set Remote Address
-     *
-     * @param string $remoteAddress remote_address
-     *
-     * @return $this
-     */
-    public function setRemoteAddress(string $remoteAddress): UrlAliasRequest
-    {
-        $this -> remote_address = $remoteAddress;
 
         return $this;
     }
