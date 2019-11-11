@@ -4,6 +4,8 @@ namespace BertMaurau\URLShortener\Controllers;
 
 use BertMaurau\URLShortener\Core AS Core;
 use BertMaurau\URLShortener\Models AS Models;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Description of BaseController
@@ -23,7 +25,7 @@ class BaseController
     const MODEL_NAME = 'BertMaurau\\URLShortener\\Models\\' . "";
 
     // Handle the main index GET
-    public function index($request, $response, $args)
+    public function index(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         // Get the current ModelName to init a class.
         $modelClass = static::MODEL_NAME;
@@ -38,7 +40,7 @@ class BaseController
     }
 
     // Handle model request
-    public function show($request, $response, $args)
+    public function show(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         // Get the current ModelName to init a class.
         $modelClass = static::MODEL_NAME;
@@ -69,7 +71,7 @@ class BaseController
     }
 
     // Handle the create request
-    public function create($request, $response, $args)
+    public function create(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         // Get the current ModelName to init a class.
         $modelClass = static::MODEL_NAME;
@@ -96,7 +98,7 @@ class BaseController
     }
 
     // Handle an update request
-    public function update($request, $response, $args)
+    public function update(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         // Get the current ModelName to init a class.
         $modelClass = static::MODEL_NAME;
@@ -146,7 +148,7 @@ class BaseController
     }
 
     // Handle a delete request
-    public function delete($request, $response, $args)
+    public function delete(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         // Get the current ModelName to init a class.
 

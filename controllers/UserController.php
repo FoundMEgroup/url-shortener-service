@@ -5,6 +5,8 @@ namespace BertMaurau\URLShortener\Controllers;
 use BertMaurau\URLShortener\Core AS Core;
 use BertMaurau\URLShortener\Config AS Config;
 use BertMaurau\URLShortener\Models AS Models;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class UserController extends BaseController
 {
@@ -12,7 +14,7 @@ class UserController extends BaseController
     // Set the current ModelName that will be used (main)
     const MODEL_NAME = 'BertMaurau\\URLShortener\\Models\\' . "User";
 
-    public function postLogin($request, $response, $args)
+    public function postLogin(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
 
         // define required arguments/values
