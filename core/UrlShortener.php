@@ -31,7 +31,7 @@ class UrlShortener
 
         // create a new Hash ID from the ID
         $shortCode = self::generateHashId(
-                        $url -> getId(), Core\Config::getInstance() -> HashId() -> seed, Core\Config::getInstance() -> HashId() -> length, Core\Config::getInstance() -> HashId() -> alphabet);
+                        $url -> getId(), Config::getInstance() -> HashId() -> seed, (int) Config::getInstance() -> HashId() -> length, Config::getInstance() -> HashId() -> alphabet);
 
         // update the record
         $url -> setShortCode($shortCode) -> update();
