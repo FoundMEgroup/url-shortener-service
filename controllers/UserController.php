@@ -15,7 +15,16 @@ class UserController extends BaseController
     // Set the current ModelName that will be used (main)
     const MODEL_NAME = 'BertMaurau\\URLShortener\\Models\\' . "User";
 
-    public function show(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    /**
+     * Validate the login credentials and return the authenticated user
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param array $args
+     *
+     * @return ResponseInterface
+     */
+    public function login(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
 
         // define required arguments/values

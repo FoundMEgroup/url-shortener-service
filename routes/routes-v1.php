@@ -30,7 +30,7 @@ $route -> map('POST', '/url', [new Controllers\UrlController, 'index']);
 $route -> map('POST', '/urls', [new Controllers\UrlController, 'create']);
 
 // Validate the given Login
-$route -> map('POST', '/validate-login', [new Controllers\UserController, 'show']);
+$route -> map('POST', '/validate-login', [new Controllers\UserController, 'login']);
 $route -> map('POST', '/register', [new Controllers\UserController, 'create']);
 
 
