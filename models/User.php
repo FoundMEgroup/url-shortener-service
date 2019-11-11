@@ -72,10 +72,22 @@ class User extends BaseModel
      *
      * @return User
      */
-    public static function validatePassword(int $userId, string $password): User
+    public function validatePassword(string $password): User
     {
 
-        return (new self) -> findBy(['id' => $userId, 'password' => $password], $take = 1);
+        // validate password
+        if (!password_verify($password, $this -> getPassword())) {
+            return false;
+        }
+
+        // verify legacy password to new password_hash options
+        if (password_needs_rehash($this -> getPassword(), PASSWORD_DEFAULT, ['cost' => 11])) {
+            // rehash/store plain-text password using new hash
+            $newHash = password_hash($password, PASSWORD_DEFAULT, ['cost' => 11]);
+            $this -> setPassword($newHash) -> update();
+        }
+
+        return true;
     }
 
     /**

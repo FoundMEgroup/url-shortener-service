@@ -34,7 +34,8 @@ $route -> map('POST', '/a/{urlAlias}', [new Controllers\UrlController, 'getByUrl
 $route -> map('POST', '/urls', [new Controllers\UrlController, 'create']);
 
 // Validate the given Login
-$route -> map('POST', '/my/login', [new Controllers\UserController, 'postLogin']);
+$route -> map('POST', '/validate-login', [new Controllers\UserController, 'show']);
+$route -> map('POST', '/register', [new Controllers\UserController, 'create']);
 
 
 /**

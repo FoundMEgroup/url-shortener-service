@@ -2,6 +2,9 @@
 
 namespace BertMaurau\URLShortener\Models;
 
+use BertMaurau\URLShortener\Core AS Core;
+use BertMaurau\URLShortener\Modules AS Modules;
+
 /**
  * Description of UserAuthToken
  *
@@ -91,29 +94,23 @@ class UserAuthToken extends BaseModel
      * @param int $userId User ID
      * @param string $env Env
      *
-     * @return UserAuthToken
+     * @return string
      */
-    public static function createForUser(int $userId, string $env): UserAuthToken
+    public static function createForUser(int $userId, string $env): string
     {
-        return (new self)
-                        -> setUserId($userId)
-                        -> setIsActive(true)
-                        -> setEnv($env)
-                        -> setUid(self::generateUid($userId, $env))
-                        -> insert();
-    }
+        $userAuthToken = (new self)
+                -> setUserId($userId)
+                -> setIsActive(true)
+                -> setEnv($env)
+                -> setUid(Core\Generator::Uid())
+                -> insert();
 
-    /**
-     * Generate UID
-     *
-     * @param int $userId User ID
-     * @param string $env Env
-     *
-     * @return string UID
-     */
-    private static function generateUid(int $userId, string $env): string
-    {
-        return md5($userId . $env . time());
+        // generate a new JWT Token
+        return Modules\JWT::encode([
+                    'env'     => Core\Config::getInstance() -> API() -> env,
+                    'userId'  => $userId,
+                    'tokenId' => $userAuthToken -> getUid(),
+                        ], Core\Config::getInstance() -> Salts() -> token);
     }
 
     /**

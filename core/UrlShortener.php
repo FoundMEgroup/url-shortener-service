@@ -3,7 +3,6 @@
 namespace BertMaurau\URLShortener\Core;
 
 use BertMaurau\URLShortener\Models AS Models;
-use Hashids\Hashids;
 
 /**
  * Description of Shortener
@@ -30,8 +29,7 @@ class UrlShortener
                 -> insert();
 
         // create a new Hash ID from the ID
-        $shortCode = self::generateHashId(
-                        $url -> getId(), Config::getInstance() -> HashId() -> seed, (int) Config::getInstance() -> HashId() -> length, Config::getInstance() -> HashId() -> alphabet);
+        $shortCode = Generator::HashId($url -> getId());
 
         // update the record
         $url -> setShortCode($shortCode) -> update();
@@ -50,12 +48,6 @@ class UrlShortener
         } else {
             return $url;
         }
-    }
-
-    private static function generateHashId(int $id, string $salt, int $length = 12, string $alphabet = null)
-    {
-        $hashids = new Hashids($salt, $length, $alphabet);
-        return $hashids -> encode($id);
     }
 
 }

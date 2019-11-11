@@ -2,6 +2,8 @@
 
 namespace BertMaurau\URLShortener\Core;
 
+use \Psr\Http\Message\ResponseInterface;
+
 /**
  * Description of Output
  *
@@ -33,7 +35,7 @@ class Output
      * @param any $data
      * @return Response
      */
-    public static function JSON($response, $code, $data)
+    public static function JSON($response, $code, $data): ResponseInterface
     {
         // maybe add some stuffs here
         // like extra validation, parameters, attributes, ..
@@ -49,7 +51,7 @@ class Output
      * Init a new response object
      * @return \Zend\Diactoros\Response
      */
-    public static function Clear()
+    public static function Clear(): ResponseInterface
     {
         return new \Zend\Diactoros\Response();
     }
@@ -60,7 +62,7 @@ class Output
      * @param any $data
      * @return JSON Output
      */
-    public static function OK($response, $data)
+    public static function OK(ResponseInterface $response, $data): ResponseInterface
     {
         return self::JSON($response, self::CODE_OK, $data);
     }
@@ -72,7 +74,7 @@ class Output
      * @param any $modelId
      * @return JSON Output
      */
-    public static function ModelNotFound($response, $modelName, $modelId, $parameter = 'id')
+    public static function ModelNotFound(ResponseInterface $response, string $modelName, $modelId, string $parameter = 'id'): ResponseInterface
     {
         return self::JSON($response, self::CODE_NOT_FOUND, array(
                     'code'    => self::CODE_NOT_FOUND,
@@ -85,7 +87,7 @@ class Output
      * @param string $message
      * @return JSON Output
      */
-    public static function NotFound($response, $message, $field = null, $value = null)
+    public static function NotFound(ResponseInterface $response, string $message, string $field = null, $value = null): ResponseInterface
     {
         // return custom message
         if ($message && !$field && !$value) {
@@ -105,7 +107,7 @@ class Output
      * @param string $message
      * @return JSON Output
      */
-    public static function ServerError($response, $message)
+    public static function ServerError(ResponseInterface $response, string $message): ResponseInterface
     {
         return self::JSON($response, self::CODE_ERROR, array(
                     'code'    => self::CODE_ERROR,
@@ -118,14 +120,14 @@ class Output
      * @param string $message
      * @return JSON Output
      */
-    public static function MissingParameter($response, $message)
+    public static function MissingParameter($response, $message): ResponseInterface
     {
         return self::JSON($response, self::CODE_MISSING_PARAMETER, array(
                     'code'    => self::CODE_MISSING_PARAMETER,
                     'message' => "Missing payload property: `$message`."));
     }
 
-    public static function Locked($response, $message)
+    public static function Locked(ResponseInterface $response, string $message): ResponseInterface
     {
         return self::JSON($response, self::CODE_LOCKED, array(
                     'code'    => self::CODE_LOCKED,
@@ -138,7 +140,7 @@ class Output
      * @param string $message
      * @return JSON Output
      */
-    public static function Conflict($response, $message)
+    public static function Conflict(ResponseInterface $response, string $message): ResponseInterface
     {
         return self::JSON($response, self::CODE_CONFLICT, array(
                     'code'    => self::CODE_CONFLICT,
@@ -151,7 +153,7 @@ class Output
      * @param string $message
      * @return JSON Output
      */
-    public static function NoContent($response)
+    public static function NoContent(ResponseInterface $response): ResponseInterface
     {
         return self::JSON($response, self::CODE_NO_CONTENT, null);
     }
@@ -162,7 +164,7 @@ class Output
      * @param type $message
      * @return type
      */
-    public static function DisabledResource($response, $message)
+    public static function DisabledResource(ResponseInterface $response, string $message): ResponseInterface
     {
         return self::JSON($response, self::CODE_DISABLED, array(
                     'code'    => self::CODE_DISABLED,
@@ -175,7 +177,7 @@ class Output
      * @param string $message
      * @return JSON Output
      */
-    public static function InvalidParameter($response, $parameter)
+    public static function InvalidParameter(ResponseInterface $response, string $parameter): ResponseInterface
     {
         return self::JSON($response, self::CODE_UNPROCESSABLE, array(
                     'code'    => self::CODE_UNPROCESSABLE,
@@ -188,7 +190,7 @@ class Output
      * @param string $message
      * @return JSON Output
      */
-    public static function ValidationFailed($response, $message)
+    public static function ValidationFailed(ResponseInterface $response, string $message): ResponseInterface
     {
         return self::JSON($response, self::CODE_VALIDATION_FAILED, array(
                     'code'    => self::CODE_VALIDATION_FAILED,
@@ -200,7 +202,7 @@ class Output
      * @param Response $response
      * @return JSON Output
      */
-    public static function MissingModelId($response)
+    public static function MissingModelId(ResponseInterface $response): ResponseInterface
     {
         return self::JSON($response, self::CODE_MISSING_PARAMETER, array(
                     'code'    => self::CODE_MISSING_PARAMETER,
@@ -212,7 +214,7 @@ class Output
      * @param Response $response
      * @return JSON Output
      */
-    public static function NotAuthorized($response, $message = null)
+    public static function NotAuthorized(ResponseInterface $response, string $message = null): ResponseInterface
     {
         return self::JSON($response, self::CODE_NOT_AUTHORIZED, array(
                     'code'    => self::CODE_NOT_AUTHORIZED,
@@ -224,7 +226,7 @@ class Output
      * @param Response $response
      * @return JSON Output
      */
-    public static function BadRequest($response, $message = null)
+    public static function BadRequest(ResponseInterface$response, string $message = null): ResponseInterface
     {
         return self::JSON($response, self::CODE_BAD_REQUEST, array(
                     'code'    => self::CODE_BAD_REQUEST,
