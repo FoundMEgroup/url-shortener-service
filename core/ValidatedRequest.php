@@ -57,23 +57,36 @@ class ValidatedRequest
 
             switch ($validationField['method']) {
                 case 'GET':
+                    if (!isset($_GET[$validationField['field']]) && $validationField['required']) {
+                        $instance -> isValid = false;
+                        $instance -> output = Output::MissingParameter($response, $validationField['field']);
+                        return $instance;
+                    }
                     $value = filter_input(INPUT_GET, $validationField['field'], self::getFilterSanitizationType($validationField['type']));
                     break;
                 case 'POST':
+                    if (!isset($payload[$validationField['field']]) && $validationField['required']) {
+                        $instance -> isValid = false;
+                        $instance -> output = Output::MissingParameter($response, $validationField['field']);
+                        return $instance;
+                    }
                     $value = filter_var($payload[$validationField['field']], self::getFilterSanitizationType($validationField['type']));
                     break;
                 case 'ARG':
+                    if (!isset($input[$validationField['field']]) && $validationField['required']) {
+                        $instance -> isValid = false;
+                        $instance -> output = Output::MissingParameter($response, $validationField['field']);
+                        return $instance;
+                    }
                     $value = filter_var($input[$validationField['field']], self::getFilterSanitizationType($validationField['type']));
                     break;
                 default:
                     break;
             }
 
-            if (!$value && $validationField['required']) {
+            if (!$value) {
                 $instance -> isValid = false;
-
                 $instance -> output = Output::InvalidParameter($response, $validationField['field']);
-
                 return $instance;
             } else {
                 $instance -> filteredInput[$validationField['field']] = $value;
@@ -106,9 +119,9 @@ class ValidatedRequest
     /**
      * Get Output
      *
-     * @return Output The Output response
+     * @return ResponseInterface The Output response
      */
-    public function getOutput(): Output
+    public function getOutput(): ResponseInterface
     {
         return $this -> output;
     }
@@ -133,6 +146,8 @@ class ValidatedRequest
                 return FILTER_SANITIZE_EMAIL;
             case 'boolean':
                 return FILTER_VALIDATE_BOOLEAN;
+            case 'url':
+                return FILTER_VALIDATE_URL;
             default:
                 return 0;
         }
