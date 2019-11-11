@@ -13,27 +13,20 @@ use GeoIp2\Database\Reader;
 class UrlTracker
 {
 
-    const TYPE_URL = 'url';
-    const TYPE_URL_ALIAS = 'url_alias';
-
     /**
      * Track the request
      *
-     * @param string $type The model type
-     * @param int $modelId The ID of the model
+     * @param int $urlId The ID of the URL
+     * @param int $urlAliasId The ID of the URL Alias
      *
      * @return void
      */
-    public static function track(string $type, int $modelId)
+    public static function track(int $urlId, int $urlAliasId = null)
     {
 
-        if ($type === self::TYPE_URL) {
-            $trackRequest = (new Models\UrlRequest)
-                    -> setUrlId($modelId);
-        } else if ($type === self::TYPE_URL_ALIAS) {
-            $trackRequest = (new Models\UrlAliasRequest)
-                    -> setUrlAliasId($modelId);
-        }
+        $trackRequest = (new Models\UrlRequest)
+                -> setUrlId($urlId)
+                -> setUrlAliasId($urlAliasId);
 
         if ($remoteAddress = Auth::getRemoteAddress()) {
 

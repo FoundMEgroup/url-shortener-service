@@ -59,7 +59,7 @@ class UrlController extends BaseController
             }
 
             // do tracker magic
-            Core\UrlTracker::track(Core\UrlTracker::TYPE_URL_ALIAS, $urlAlias -> getId());
+            Core\UrlTracker::track($url -> getId(), $urlAlias -> getId());
 
             //
         } else if ($getField === 'code') {
@@ -70,7 +70,7 @@ class UrlController extends BaseController
             }
 
             // do tracker magic
-            Core\UrlTracker::track(Core\UrlTracker::TYPE_URL, $url -> getId());
+            Core\UrlTracker::track($url -> getId());
 
             //
         }

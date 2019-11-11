@@ -32,6 +32,12 @@ class UrlRequest extends BaseModel
     protected $url_id;
 
     /**
+     * Url Alias ID
+     * @var integer
+     */
+    public $url_alias_id;
+
+    /**
      * Remote Address
      * @var string
      */
@@ -93,6 +99,16 @@ class UrlRequest extends BaseModel
     public function getUrlId(): int
     {
         return $this -> url_id;
+    }
+
+    /**
+     * Get URL Alias ID
+     *
+     * @return int URL Alias ID
+     */
+    public function getUrlAliasId(): int
+    {
+        return $this -> url_alias_id;
     }
 
     /**
@@ -195,6 +211,20 @@ class UrlRequest extends BaseModel
     public function setUrlId(int $urlId): UrlRequest
     {
         $this -> url_id = $urlId;
+
+        return $this;
+    }
+
+    /**
+     * Set URL Alias ID
+     *
+     * @param int $urlAliasId url_alias_id
+     *
+     * @return $this
+     */
+    public function setUrlAliasId(int $urlAliasId): UrlRequest
+    {
+        $this -> url_alias_id = $urlAliasId;
 
         return $this;
     }
