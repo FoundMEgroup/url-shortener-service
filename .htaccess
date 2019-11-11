@@ -3,5 +3,6 @@ RewriteEngine On
 
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
+RewriteRule ^(app)($|/) - [L]
 RewriteRule !\.(ico|gif|jpg|png|css|js|swf|flv)$ index.php?/$1 [QSA]
 

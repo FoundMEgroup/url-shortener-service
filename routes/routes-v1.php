@@ -14,7 +14,10 @@ use Psr\Http\Message\ServerRequestInterface;
 $route -> map('GET', '/', function(ServerRequestInterface $request, ResponseInterface $response) {
 
     // You can do whatever you want here, This route is not required or anything.
-    return Core\Output::OK($response, date('Y-m-d H:i:s'));
+    // redirect to app index
+    header("Location: " . Core\Config::getInstance() -> app() -> base_url . Core\Config::getInstance() -> APP() -> root);
+    exit;
+    // return Core\Output::OK($response, date('Y-m-d H:i:s'));
 });
 
 /**
