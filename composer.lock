@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "04172415130c7ad012cd71b302ad1b5b",
+    "content-hash": "f89d8c8f423e9584b9b7594c784d1dd3",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1081,41 +1081,35 @@
         },
         {
             "name": "zendframework/zend-diactoros",
-            "version": "dev-develop",
+            "version": "dev-release-1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "825e3bf4e679a312f8c09a94a443ce5f9fb3d46a"
+                "reference": "e03f49042677da6a9c7a6699cf7e6025ec234603"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/825e3bf4e679a312f8c09a94a443ce5f9fb3d46a",
-                "reference": "825e3bf4e679a312f8c09a94a443ce5f9fb3d46a",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/e03f49042677da6a9c7a6699cf7e6025ec234603",
+                "reference": "e03f49042677da6a9c7a6699cf7e6025ec234603",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1",
-                "psr/http-factory": "^1.0",
+                "php": "^5.6 || ^7.0",
                 "psr/http-message": "^1.0"
             },
             "provide": {
-                "psr/http-factory-implementation": "1.0",
                 "psr/http-message-implementation": "1.0"
             },
             "require-dev": {
-                "ext-curl": "*",
                 "ext-dom": "*",
                 "ext-libxml": "*",
-                "http-interop/http-factory-tests": "^0.5.0",
                 "php-http/psr7-integration-tests": "dev-master",
-                "phpunit/phpunit": "^7.0.2",
-                "zendframework/zend-coding-standard": "~1.0.0"
+                "phpunit/phpunit": "^5.7.16 || ^6.0.8 || ^7.2.7",
+                "zendframework/zend-coding-standard": "~1.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1.x-dev",
-                    "dev-develop": "2.2.x-dev",
                     "dev-release-1.8": "1.8.x-dev"
                 }
             },
@@ -1136,15 +1130,16 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-3-Clause"
+                "BSD-2-Clause"
             ],
             "description": "PSR HTTP Message implementations",
+            "homepage": "https://github.com/zendframework/zend-diactoros",
             "keywords": [
                 "http",
                 "psr",
                 "psr-7"
             ],
-            "time": "2019-11-03T08:57:18+00:00"
+            "time": "2019-08-06T17:55:50+00:00"
         }
     ],
     "packages-dev": [],

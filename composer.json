@@ -5,7 +5,7 @@
     "require": {
         "vlucas/phpdotenv": "^4.0@dev",
         "phpmailer/phpmailer": "dev-master",
-        "zendframework/zend-diactoros": "^2.1@dev",
+        "zendframework/zend-diactoros": "dev-release-1.8",
         "lasserafn/php-initial-avatar-generator": "dev-master",
         "league/route": "3.x-dev",
         "hashids/hashids": "^4.0@dev"
