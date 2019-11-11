@@ -22,7 +22,7 @@ $authentication = function ($request, $response, callable $next) {
         try {
             // Get the JSON data that has been encoded (can contain whatever you like)
             // and assign that data to the Auth object
-            $tokenData = (object) json_decode(Modules\JWT::decode($token, Core\Config::getInstance() -> Salts() -> token));
+            $tokenData = (object) Modules\JWT::decode($token, Core\Config::getInstance() -> Salts() -> token);
 
             // check for required token data values
             foreach (['env', 'userId', 'tokenId'] as $key => $value) {
@@ -53,7 +53,7 @@ $authentication = function ($request, $response, callable $next) {
             }
 
             // assign the data to the auth object
-            Core\Auth::assign($tokenData);
+            Core\Auth::assign((array) $tokenData);
         } catch (\Exception $ex) {
 
             // Send a response when the integrity-check of the token failed.

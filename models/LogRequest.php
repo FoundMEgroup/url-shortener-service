@@ -3,6 +3,7 @@
 namespace BertMaurau\URLShortener\Models;
 
 use BertMaurau\URLShortener\Core as Core;
+use BertMaurau\URLShortener\Modules as Modules;
 
 /**
  * Description of LogRequest
@@ -98,7 +99,7 @@ class LogRequest extends BaseModel
             $token = Core\Auth::getBearerToken();
 
             if ($token && $token != "") {
-                $tokenData = (object) json_decode(Modules\JWT::decode($token, Core\Config::getInstance() -> Salts() -> token));
+                $tokenData = (object) Modules\JWT::decode($token, Core\Config::getInstance() -> Salts() -> token);
 
                 $userId = isset($tokenData -> userId) ? (int) $tokenData -> userId : null;
             }

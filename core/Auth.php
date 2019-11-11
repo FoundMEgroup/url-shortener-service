@@ -34,9 +34,9 @@ class Auth
             $setter = 'set' . ucfirst($key);
 
             // check if the setter exists and if it is callable
-            if (is_callable(array(self, $setter))) {
+            if (is_callable(array(Auth::class, $setter))) {
                 // execute the setter
-                call_user_func(array(self, $setter), $value);
+                call_user_func(array(Auth::class, $setter), $value);
             }
         }
     }

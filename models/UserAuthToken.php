@@ -98,11 +98,14 @@ class UserAuthToken extends BaseModel
      */
     public static function createForUser(int $userId, string $env): string
     {
+        $newDate = date("Y-m-d H:i:s", strtotime("+1 month"));
+
         $userAuthToken = (new self)
                 -> setUserId($userId)
                 -> setIsActive(true)
                 -> setEnv($env)
                 -> setUid(Core\Generator::Uid())
+                -> setExpiresAt($newDate)
                 -> insert();
 
         // generate a new JWT Token

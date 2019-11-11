@@ -72,7 +72,7 @@ class User extends BaseModel
      *
      * @return User
      */
-    public function validatePassword(string $password): User
+    public function validatePassword(string $password)
     {
 
         // validate password
