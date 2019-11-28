@@ -64,7 +64,7 @@ $container -> share('request', function () {
     // change Constants API ROOT if the "api" is not running on the root of the
     // domain. For ex. if this is hosted within a subdirectory API then set this
     // to "/api" so that it matches the actual url: http://domain.com/api for ex.
-    $_SERVER['REQUEST_URI'] = str_replace(Core\Config::getInstance() -> API() -> root, '', filter_input(INPUT_SERVER, 'REQUEST_URI'));
+    $_SERVER['REQUEST_URI'] = str_replace(Core\Config::getInstance() -> API() -> root, '', Core\ValidatedRequest::filterInput(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING));
 
     return \Zend\Diactoros\ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
 });

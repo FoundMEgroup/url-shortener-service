@@ -49,7 +49,7 @@ class UrlController extends BaseController
 
             $urlAlias = (new Models\UrlAlias) -> findBy(['alias' => $filteredInput['alias']], $take = 1);
             if (!$urlAlias) {
-                return Core\Output::ModelNotFound($response, 'UrlAlias', $filteredInput['alias'], 'a');
+                return Core\Output::ModelNotFound($response, 'UrlAlias', $filteredInput['alias'], 'alias');
             }
 
             // get the URL for given alias
@@ -66,7 +66,7 @@ class UrlController extends BaseController
 
             $url = (new Models\Url) -> findBy(['short_code' => $filteredInput['code']], $take = 1);
             if (!$url) {
-                return Core\Output::ModelNotFound($response, 'Url', $filteredInput['code'], 'c');
+                return Core\Output::ModelNotFound($response, 'Url', $filteredInput['code'], 'code');
             }
 
             // do tracker magic
