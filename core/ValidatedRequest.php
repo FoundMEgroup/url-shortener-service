@@ -107,6 +107,43 @@ class ValidatedRequest
     }
 
     /**
+     * Custom function for filter_input to fix issues with FastCGI and server/environment vars
+     *
+     * @source https://stackoverflow.com/a/36205923/3347968
+     *
+     * @param int $type
+     * @param string $variable_name
+     * @param int $filter
+     * @param type $options
+     *
+     * @return mixed
+     */
+    public static function filterInput(int $type, string $variable_name, int $filter = FILTER_DEFAULT, $options = NULL)
+    {
+        $checkTypes = [
+            INPUT_GET,
+            INPUT_POST,
+            INPUT_COOKIE
+        ];
+
+        if ($options === NULL) {
+            // No idea if this should be here or not
+            // Maybe someone could let me know if this should be removed?
+            $options = FILTER_NULL_ON_FAILURE;
+        }
+
+        if (in_array($type, $checkTypes) || filter_has_var($type, $variable_name)) {
+            return filter_input($type, $variable_name, $filter, $options);
+        } else if ($type == INPUT_SERVER && isset($_SERVER[$variable_name])) {
+            return filter_var($_SERVER[$variable_name], $filter, $options);
+        } else if ($type == INPUT_ENV && isset($_ENV[$variable_name])) {
+            return filter_var($_ENV[$variable_name], $filter, $options);
+        } else {
+            return NULL;
+        }
+    }
+
+    /**
      * Return Is valid
      *
      * @return bool Valid

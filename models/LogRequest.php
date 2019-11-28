@@ -79,8 +79,8 @@ class LogRequest extends BaseModel
     {
 
         // get the info about the request
-        $verb = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
-        $uri = filter_input(INPUT_SERVER, 'REQUEST_URI');
+        $verb = Core\ValidatedRequest::filterInput(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING);
+        $uri = Core\ValidatedRequest::filterInput(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING);
         $rawPayload = json_encode(file_get_contents('php://input'));
         $rawHeaders = json_encode(getallheaders());
         $remoteAddress = Core\Auth::getRemoteAddress();
@@ -170,7 +170,7 @@ class LogRequest extends BaseModel
      *
      * @return string Payload
      */
-    public function getPayload(): string
+    public function getPayload(): ?string
     {
         return $this -> payload;
     }
