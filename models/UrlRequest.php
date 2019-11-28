@@ -106,7 +106,7 @@ class UrlRequest extends BaseModel
      *
      * @return int URL Alias ID
      */
-    public function getUrlAliasId(): int
+    public function getUrlAliasId(): ?int
     {
         return $this -> url_alias_id;
     }
@@ -116,7 +116,7 @@ class UrlRequest extends BaseModel
      *
      * @return string
      */
-    public function getRemoteAddress(): string
+    public function getRemoteAddress(): ?string
     {
         return $this -> remote_address;
     }
@@ -126,7 +126,7 @@ class UrlRequest extends BaseModel
      *
      * @return string
      */
-    public function getCountryIso(): string
+    public function getCountryIso(): ?string
     {
         return $this -> country_iso;
     }
@@ -136,7 +136,7 @@ class UrlRequest extends BaseModel
      *
      * @return string
      */
-    public function getCountryName(): string
+    public function getCountryName(): ?string
     {
         return $this -> country_name;
     }
@@ -146,7 +146,7 @@ class UrlRequest extends BaseModel
      *
      * @return string
      */
-    public function getDivisionIso(): string
+    public function getDivisionIso(): ?string
     {
         return $this -> division_iso;
     }
@@ -156,7 +156,7 @@ class UrlRequest extends BaseModel
      *
      * @return string
      */
-    public function getDivisionName(): string
+    public function getDivisionName(): ?string
     {
         return $this -> division_name;
     }
@@ -166,7 +166,7 @@ class UrlRequest extends BaseModel
      *
      * @return string
      */
-    public function getCity(): string
+    public function getCity(): ?string
     {
         return $this -> city;
     }
@@ -176,7 +176,7 @@ class UrlRequest extends BaseModel
      *
      * @return string
      */
-    public function getPostalCode(): string
+    public function getPostalCode(): ?string
     {
         return $this -> postal_code;
     }
@@ -186,7 +186,7 @@ class UrlRequest extends BaseModel
      *
      * @return float
      */
-    public function getLatitude(): float
+    public function getLatitude(): ?float
     {
         return $this -> latitude;
     }
@@ -196,7 +196,7 @@ class UrlRequest extends BaseModel
      *
      * @return float
      */
-    public function getLongitude(): float
+    public function getLongitude(): ?float
     {
         return $this -> longitude;
     }
@@ -222,7 +222,7 @@ class UrlRequest extends BaseModel
      *
      * @return $this
      */
-    public function setUrlAliasId(int $urlAliasId): UrlRequest
+    public function setUrlAliasId(int $urlAliasId = null): UrlRequest
     {
         $this -> url_alias_id = $urlAliasId;
 
