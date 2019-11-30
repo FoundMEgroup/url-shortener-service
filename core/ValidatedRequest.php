@@ -26,7 +26,7 @@ class ValidatedRequest
     const METHOD_ARG = 'ARG';
 
     /**
-     * Instace
+     * Instance
      * @var ValidatedRequest
      */
     private $instance;
