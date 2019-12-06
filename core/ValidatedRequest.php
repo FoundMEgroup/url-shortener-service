@@ -20,6 +20,7 @@ class ValidatedRequest
     const TYPE_URL = 'url';
     const TYPE_BOOLEAN = 'boolean';
     const TYPE_EMAIL = 'email';
+    const TYPE_MIXED = 'mixed';
     // variable input methods
     const METHOD_POST = 'POST';
     const METHOD_GET = 'GET';
@@ -73,7 +74,7 @@ class ValidatedRequest
                         $instance -> isValid = false;
                         $instance -> output = Output::MissingParameter($response, $validationField['field']);
                     } else {
-                        $value = filter_input(INPUT_GET, $validationField['field'], self::getFilterSanitizationType($validationField['type']));
+                        $value = self::filterInput(INPUT_GET, $validationField['field'], self::getFilterSanitizationType($validationField['type']));
                     }
                     break;
                 case self::METHOD_POST:
@@ -81,7 +82,7 @@ class ValidatedRequest
                         $instance -> isValid = false;
                         $instance -> output = Output::MissingParameter($response, $validationField['field']);
                     } else {
-                        $value = filter_var($payload[$validationField['field']], self::getFilterSanitizationType($validationField['type']));
+                        $value = self::filterVar($payload[$validationField['field']], self::getFilterSanitizationType($validationField['type']));
                     }
                     break;
                 case self::METHOD_ARG:
@@ -89,7 +90,7 @@ class ValidatedRequest
                         $instance -> isValid = false;
                         $instance -> output = Output::MissingParameter($response, $validationField['field']);
                     } else {
-                        $value = filter_var($input[$validationField['field']], self::getFilterSanitizationType($validationField['type']));
+                        $value = self::filterVar($input[$validationField['field']], self::getFilterSanitizationType($validationField['type']));
                     }
                     break;
                 default:
@@ -146,6 +147,20 @@ class ValidatedRequest
     }
 
     /**
+     * Alias function for filter_var (to have some "consistency")
+     *
+     * @param mixed $variable
+     * @param int $filter
+     * @param int $options
+     *
+     * @return mixed
+     */
+    public static function filterVar($variable, int $filter = FILTER_DEFAULT, int $options = NULL)
+    {
+        return filter_var($variable, $filter, $options);
+    }
+
+    /**
      * Return Is valid
      *
      * @return bool Valid
@@ -185,7 +200,7 @@ class ValidatedRequest
     private static function getFilterSanitizationType(string $type): int
     {
 
-        $filterVal = 0;
+        $filterVal = FILTER_DEFAULT;
         switch ($type) {
             case self::TYPE_STRING:
                 $filterVal = FILTER_SANITIZE_STRING;
@@ -199,8 +214,10 @@ class ValidatedRequest
                 $filterVal = FILTER_VALIDATE_BOOLEAN;
             case self::TYPE_URL:
                 $filterVal = FILTER_VALIDATE_URL;
+            case self::TYPE_MIXED:
+                $filterVal = FILTER_DEFAULT;
             default:
-                $filterVal = 0;
+                $filterVal = FILTER_DEFAULT;
         }
 
         return $filterVal;
