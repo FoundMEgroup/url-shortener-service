@@ -24,7 +24,11 @@ $route -> map('GET', '/', function(ServerRequestInterface $request, ResponseInte
  */
 // get the external url
 $route -> map('GET', '/url', [new Controllers\UrlController, 'index']);
+$route -> map('GET', '/c/{code}', [new Controllers\UrlController, 'index']);
+$route -> map('GET', '/a/{alias}', [new Controllers\UrlController, 'index']);
 $route -> map('POST', '/url', [new Controllers\UrlController, 'index']);
+$route -> map('POST', '/c/{code}', [new Controllers\UrlController, 'index']);
+$route -> map('POST', '/a/{alias}', [new Controllers\UrlController, 'index']);
 
 // generate new anonymous url
 $route -> map('POST', '/urls', [new Controllers\UrlController, 'create']);

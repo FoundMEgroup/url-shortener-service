@@ -25,17 +25,26 @@ class UrlController extends BaseController
      */
     public function index(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-        if (isset($_GET['code'])) {
-            $getField = 'code';
-        } else if (isset($_GET['alias'])) {
-            $getField = 'alias';
+        // check for method/filter
+        if ($code = Core\ValidatedRequest::filterInput(INPUT_GET, 'code')) {
+            $fieldName = 'code';
+            $fieldInput = Core\ValidatedRequest::METHOD_GET;
+        } else if (isset($args['code']) && $code = Core\ValidatedRequest::filterVar($args['code'])) {
+            $fieldName = 'code';
+            $fieldInput = Core\ValidatedRequest::METHOD_ARG;
+        } else if ($alias = Core\ValidatedRequest::filterInput(INPUT_GET, 'alias')) {
+            $fieldName = 'alias';
+            $fieldInput = Core\ValidatedRequest::METHOD_GET;
+        } else if (isset($args['alias']) && $alias = Core\ValidatedRequest::filterVar($args['alias'])) {
+            $fieldName = 'alias';
+            $fieldInput = Core\ValidatedRequest::METHOD_ARG;
         } else {
             return Core\Output::MissingParameter($response, 'Missing URL parameter code|alias.');
         }
 
         // define required arguments/values
         $validationFields = [
-            ['method' => Core\ValidatedRequest::METHOD_GET, 'field' => $getField, 'type' => Core\ValidatedRequest::TYPE_STRING, 'required' => true,],
+            ['method' => $fieldInput, 'field' => $fieldName, 'type' => Core\ValidatedRequest::TYPE_MIXED, 'required' => true,],
         ];
 
         $validatedRequest = Core\ValidatedRequest::validate($request, $response, $validationFields, $args);
@@ -45,7 +54,7 @@ class UrlController extends BaseController
 
         $filteredInput = $validatedRequest -> getFilteredInput();
 
-        if ($getField === 'alias') {
+        if ($fieldName === 'alias') {
 
             $urlAlias = (new Models\UrlAlias) -> findBy(['alias' => $filteredInput['alias']], $take = 1);
             if (!$urlAlias) {
@@ -62,7 +71,7 @@ class UrlController extends BaseController
             Core\UrlTracker::track($url -> getId(), $urlAlias -> getId());
 
             //
-        } else if ($getField === 'code') {
+        } else if ($fieldName === 'code') {
 
             $url = (new Models\Url) -> findBy(['short_code' => $filteredInput['code']], $take = 1);
             if (!$url) {
