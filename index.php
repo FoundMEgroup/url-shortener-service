@@ -5,6 +5,11 @@ namespace BertMaurau\URLShortener;
 use BertMaurau\URLShortener\Core AS Core;
 use BertMaurau\URLShortener\Models AS Models;
 
+//  Load all the required classes and files.
+// -----------------------------------------------------------------------------
+require 'require.php';
+
+
 // -----------------------------------------------------------------------------
 //  Handle CORS
 // -----------------------------------------------------------------------------
@@ -34,17 +39,13 @@ header('Access-Control-Max-Age: 1728000');
 
 // If the client side requested a pre-flight OPTIONS request due to custom headers
 // of some sort.
-if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'OPTIONS') {
+if (Core\ValidatedRequest::filterInput(INPUT_SERVER, 'REQUEST_METHOD') === 'OPTIONS') {
     header('Content-Length: 0');
     header('Content-Type: text/plain');
 
     // end the script here
-    die();
+    die('OK');
 }
-
-//  Load all the required classes and files.
-// -----------------------------------------------------------------------------
-require 'require.php';
 
 // log any incoming requests
 try {
