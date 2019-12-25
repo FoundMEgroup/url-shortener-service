@@ -93,7 +93,7 @@ class Database
     public static function query(string $query)
     {
         if (!$result = self::$mysqli -> query($query)) {
-            throw new \Exception(self::getLastError());
+            throw new \Exception("\r\n\Failed to execute query: $query \r\n" . self::getLastError());
         }
         return $result;
     }
