@@ -40,7 +40,7 @@ class UserUrl extends BaseModel
     public $url_id;
 
     /**
-     * Get list of user Urls with basic counts
+     * Get list of user URLs with basic counts
      *
      * @param int $userId
      *
@@ -77,7 +77,7 @@ class UserUrl extends BaseModel
     /**
      * Delete everything related to this User URL
      */
-    public function deleteFull()
+    public function deleteFull(): void
     {
         // delete url
         $url = (new Url) -> findByAndDelete(['id' => $this -> getUrlId()]);
@@ -116,7 +116,7 @@ class UserUrl extends BaseModel
      *
      * @param int $userId user_id
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\UserUrl
      */
     public function setUserId(int $userId): UserUrl
     {
@@ -130,7 +130,7 @@ class UserUrl extends BaseModel
      *
      * @param int $urlId url_id
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\UserUrl
      */
     public function setUrlId(int $urlId): UserUrl
     {

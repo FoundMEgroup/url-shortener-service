@@ -60,7 +60,7 @@ class User extends BaseModel
 
     /**
      * Validated At
-     * @var DateTime
+     * @var \DateTime
      */
     protected $validated_at;
 
@@ -70,9 +70,9 @@ class User extends BaseModel
      * @param integer $userId The user ID
      * @param string $password The password hash
      *
-     * @return User
+     * @return bool
      */
-    public function validatePassword(string $password)
+    public function validatePassword(string $password): bool
     {
 
         // validate password
@@ -96,9 +96,9 @@ class User extends BaseModel
      * @param string $email The email address
      * @param string $password The password hash
      *
-     * @return User
+     * @return \BertMaurau\URLShortener\Models\User
      */
-    public static function validateLogin(string $email, string $password): User
+    public static function validateLogin(string $email, string $password): ?User
     {
         return (new self) -> findBy(['email' => $email, 'password' => $password], $take = 1);
     }
@@ -168,7 +168,7 @@ class User extends BaseModel
      *
      * @param string $uid uid
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\User
      */
     public function setUid(string $uid): User
     {
@@ -182,7 +182,7 @@ class User extends BaseModel
      *
      * @param string $firstName first_name
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\User
      */
     public function setFirstName(string $firstName = null): User
     {
@@ -196,7 +196,7 @@ class User extends BaseModel
      *
      * @param string $lastName last_name
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\User
      */
     public function setLast_name(string $lastName = null): User
     {
@@ -210,7 +210,7 @@ class User extends BaseModel
      *
      * @param string $email email
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\Use
      */
     public function setEmail(string $email): User
     {
@@ -224,7 +224,7 @@ class User extends BaseModel
      *
      * @param string $password password
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\User
      */
     public function setPassword(string $password): User
     {
@@ -238,7 +238,7 @@ class User extends BaseModel
      *
      * @param \DateTime $validatedAt validated_at
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\User
      */
     public function setValidatedAt(\DateTime $validatedAt = null): User
     {

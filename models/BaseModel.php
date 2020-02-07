@@ -101,7 +101,7 @@ class BaseModel
      *
      * @return array valid|reason
      */
-    public function validate()
+    public function validate(): array
     {
         // check if there are validation rules
         if (count(static::VALIDATION) < 1) {
@@ -410,7 +410,7 @@ class BaseModel
      *
      * @return int ID
      */
-    public function getId(): int
+    public function getId()
     {
         return $this -> id;
     }

@@ -124,7 +124,7 @@ class LogRequest extends BaseModel
     /**
      * Create a new instance
      *
-     * @return instance
+     * @return \BertMaurau\URLShortener\Models\LogRequest
      */
     public static function getInstance()
     {
@@ -200,7 +200,7 @@ class LogRequest extends BaseModel
      *
      * @param int $userId user_id
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\LogRequest
      */
     public function setUserId(int $userId = null): LogRequest
     {
@@ -214,7 +214,7 @@ class LogRequest extends BaseModel
      *
      * @param string $verb verb
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\LogRequest
      */
     public function setVerb(string $verb): LogRequest
     {
@@ -228,7 +228,7 @@ class LogRequest extends BaseModel
      *
      * @param string $uri uri
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\LogRequest
      */
     public function setUri(string $uri): LogRequest
     {
@@ -242,7 +242,7 @@ class LogRequest extends BaseModel
      *
      * @param string $payload payload
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\LogRequest
      */
     public function setPayload(string $payload): LogRequest
     {
@@ -256,7 +256,7 @@ class LogRequest extends BaseModel
      *
      * @param string $headers headers
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\LogRequest
      */
     public function setHeaders(string $headers): LogRequest
     {
@@ -270,7 +270,7 @@ class LogRequest extends BaseModel
      *
      * @param string $remoteAddress remote_address
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\LogRequest
      */
     public function setRemoteAddress(string $remoteAddress): LogRequest
     {

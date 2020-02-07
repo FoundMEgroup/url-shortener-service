@@ -148,7 +148,7 @@ class UserAuthToken extends BaseModel
     /**
      * Get Expires At
      *
-     * @return DateTime Expires At
+     * @return \DateTime Expires At
      */
     public function getExpiresAt(): \DateTime
     {
@@ -170,7 +170,7 @@ class UserAuthToken extends BaseModel
      *
      * @param int $userId user_id
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\UserAuthToken
      */
     public function setUserId(int $userId): UserAuthToken
     {
@@ -184,7 +184,7 @@ class UserAuthToken extends BaseModel
      *
      * @param string $uid uid
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\UserAuthToken
      */
     public function setUid(string $uid): UserAuthToken
     {
@@ -198,7 +198,7 @@ class UserAuthToken extends BaseModel
      *
      * @param string $env env
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\UserAuthToken
      */
     public function setEnv(string $env): UserAuthToken
     {
@@ -212,7 +212,7 @@ class UserAuthToken extends BaseModel
      *
      * @param string $expiresAt expires_at
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\UserAuthToken
      *
      * @throws \Exception
      */
@@ -236,7 +236,7 @@ class UserAuthToken extends BaseModel
      *
      * @param any $isActive is_active
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\UserAuthToken
      */
     public function setIsActive($isActive): UserAuthToken
     {

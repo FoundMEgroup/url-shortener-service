@@ -2,6 +2,8 @@
 
 namespace BertMaurau\URLShortener\Models;
 
+use BertMaurau\URLShortener\Core AS Core;
+
 /**
  * Description of Url
  *
@@ -40,19 +42,58 @@ class Url extends BaseModel
     public $url;
 
     /**
-     * Redirect to the URL and exit script
+     * Browser Detect
+     * @var boolean
      */
-    public function redirectToUrl()
+    public $browser_detect;
+
+    /**
+     * Redirect to the URL and exit script
+     *
+     * @param UrlRequest $urlRequest The URL Request to use for the tracker
+     *
+     * @return void
+     */
+    public function redirectToUrl(UrlRequest $urlRequest): void
     {
-        if (!headers_sent()) {
-            header("Location: {$this -> getUrl()}");
+        if ($this -> getBrowserDetect()) {
+            // render javascript page to get/fetch browser info that sends
+            // client info to this api for this url and then redirects
+
+            Core\BrowserDetect::render($this -> getUrl(), $urlRequest -> getGuid());
+
+            // do tracker magic
+            Core\UrlTracker::track($urlRequest);
+
+            //
         } else {
-            echo '<script type="text/javascript">';
-            echo 'window.location.href="' . $this -> getUrl() . '";';
-            echo '</script>';
-            echo '<noscript>';
-            echo '<meta http-equiv="refresh" content="0;url=' . $this -> getUrl() . '" />';
-            echo '</noscript>';
+            if (!headers_sent()) {
+
+                // start the forced redirect
+                header('Connection: close');
+                ob_start();
+                header('Content-Length: 0');
+                header("Location: {$this -> getUrl()}");
+                ob_end_flush();
+                flush();
+                // end the forced redirect and continue with this script process
+
+                ignore_user_abort(true);
+
+                // do tracker magic
+                Core\UrlTracker::track($urlRequest);
+
+                //
+            } else {
+
+                // fallback script
+                echo '<script type="text/javascript">';
+                echo '  window.location.href="' . $this -> getUrl() . '";';
+                echo '</script>';
+                echo '<noscript>';
+                echo '  <meta http-equiv="refresh" content="0;url=' . $this -> getUrl() . '" />';
+                echo '</noscript>';
+            }
         }
         exit();
     }
@@ -78,11 +119,21 @@ class Url extends BaseModel
     }
 
     /**
+     * Get Browser Detect
+     *
+     * @return bool Browser Detect
+     */
+    public function getBrowserDetect(): bool
+    {
+        return $this -> browser_detect;
+    }
+
+    /**
      * Set Short Code
      *
      * @param string $shortCode short_code
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\Url
      */
     public function setShortCode(string $shortCode = null): Url
     {
@@ -96,11 +147,25 @@ class Url extends BaseModel
      *
      * @param string $url url
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\Url
      */
     public function setUrl(string $url): Url
     {
         $this -> url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Set Browser Detect
+     *
+     * @param bool $browserDetect browser_detect
+     *
+     * @return \BertMaurau\URLShortener\Models\Url
+     */
+    public function setBrowserDetect(bool $browserDetect): Url
+    {
+        $this -> browser_detect = $browserDetect;
 
         return $this;
     }

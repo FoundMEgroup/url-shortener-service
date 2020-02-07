@@ -64,7 +64,7 @@ class UrlAlias extends BaseModel
      *
      * @param int $urlId url_id
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\UrlAlias
      */
     public function setUrlId(int $urlId): UrlAlias
     {
@@ -78,7 +78,7 @@ class UrlAlias extends BaseModel
      *
      * @param string $alias Alias
      *
-     * @return $this
+     * @return \BertMaurau\URLShortener\Models\UrlAlias
      */
     public function setAlias(string $alias): UrlAlias
     {
