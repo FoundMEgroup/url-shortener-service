@@ -1,11 +1,36 @@
+# URL Shortener & Tracker
+## Description
+
+A simple and basic URL shortener service with back-end tracking and analytics.
+
+Convert your long URL to a short URL referenced by a short code. The service also allows for `aliasses` to personalize your short URL.
+
+By default, every URL request gets tracked. This includes basic timestamps and the geolocation. When `BrowserDetect` has been turned on for the shortened URL, a loading page will be previewed to fetch the client's browser information first before redirecting. This includes the platform, the browser, language, ..
+
+## Features
+### Public
+
+- Shorten an URL
+
+
+### Private (needs authentication)
+
+- URL Management
+- URL Aliasses
+- Browser Detect
+- Analytics
+
+
 ## Installation
 ### Host the backend shortening service
+
 1. Download/clone the `service` repo on your backend host/domain.
 2. Run `composer install`
 3. Edit the `.env` values to match your environment and database configuration.
 4. Open your browser and go to the index `/` to check if it's running correctly
 
 ### Redirect your short domain to the backend service (when running a seperate front and back).
+
 You can put this within a `.htaccess` file or within the `virtual-host` configuration on your 'short-domain'.
 
 ```
@@ -25,7 +50,7 @@ RewriteEngine On
 
 # Short-codes
 RewriteRule ^c/(.*)$ https://api.shortdomain.com/url?code=$1 [R=301,NC,L]
-# OR RewriteRule ^c/(.*)$ https://aapi.shortdomain.com/c/$1 [R=301,NC,L]
+# OR RewriteRule ^c/(.*)$ https://api.shortdomain.com/c/$1 [R=301,NC,L]
 
 # Aliasses
 RewriteRule ^a/(.*)$ https://api.shortdomain.com/url?alias=$1 [R=301,NC,L]
@@ -36,43 +61,34 @@ RewriteRule ^a/(.*)$ https://api.shortdomain.com/url?alias=$1 [R=301,NC,L]
 ## API
 ### Public endpoints
 #### Handle Short-URL
+
 Go to the associated URL for given code/alias.
-|||
-|--|--|
-| **Method** | GET - POST |
-| **Endpoint** | `/url` |
-| **Required Arguments** | `code` | `alias` |
-| **Example** | GET `/url?code=1ab2c3d4` |
+| **Method**    | `GET` or `POST` |
+| **Endpoint**  | `/url` |
+| **Arguments** | `code` or `alias` |
+| **Example**   | `GET /url?code=1ab2c3d4` |
 
 Alias endpoints:
-|||
-|--|--|
-| **Method** | GET - POST |
-| **Endpoint** | `/c/:code` |
-| **Example** | GET `/c/1ab2c3d4` |
+| **Method**    | `GET` or `POST` |
+| **Endpoint**  | `/c/:code` |
+| **Example**   | `GET /c/1ab2c3d4` |
 
-|||
-|--|--|
-| **Method** | GET - POST |
-| **Endpoint** | `/a/:alias` |
-| **Example** | GET `/a/1ab2c3d4` |
+| **Method**    | `GET` or `POST` |
+| **Endpoint**  | `/a/:alias` |
+| **Example**   | `GET /a/1ab2c3d4` |
+
 
 #### Create new Short URL
 Create a new shortened URL (as an anonymous user)
-  |||
-|--|--|
-| **Method** | POST |
-| **Endpoint** | `/urls` |
-| **Required Payload** | `url:string` |
-| **Example** | POST `/urls` `{ url: 'www.google.com' }` |
+
+| **Method**    | `POST` |
+| **Endpoint**  | `/urls` |
+| **Payload**   | `url:string` |
+| **Example**   | `POST /urls` `{ url: 'www.google.com' }` |
 
 #### Validate user account (login)
 
-  
-
 Validate user credentials and request accessToken.
-
-  
 
 *Method:* POST
 
