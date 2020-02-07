@@ -21,6 +21,7 @@ class ValidatedRequest
     const TYPE_BOOLEAN = 'boolean';
     const TYPE_EMAIL = 'email';
     const TYPE_MIXED = 'mixed';
+    const TYPE_JSON = 'json';
     // variable input methods
     const METHOD_POST = 'POST';
     const METHOD_GET = 'GET';
@@ -82,7 +83,11 @@ class ValidatedRequest
                         $instance -> isValid = false;
                         $instance -> output = Output::MissingParameter($response, $validationField['field']);
                     } else {
-                        $value = self::filterVar($payload[$validationField['field']], self::getFilterSanitizationType($validationField['type']));
+                        if ($validationField['type'] === self::TYPE_JSON) {
+                            $value = $payload[$validationField['field']];
+                        } else {
+                            $value = self::filterVar($payload[$validationField['field']], self::getFilterSanitizationType($validationField['type']));
+                        }
                     }
                     break;
                 case self::METHOD_ARG:
