@@ -384,7 +384,7 @@ class BaseModel
     /**
      * Delete Model
      *
-     * $param boolean $hardDelete Force hard-delete
+     * $param bool $hardDelete Force hard-delete
      *
      * @return $this
      */
@@ -401,6 +401,45 @@ class BaseModel
 
             Core\Database::query($query);
         }
+
+        return $this;
+    }
+
+    /**
+     * Find & Delete Models
+     *
+     * @param array $fieldsWithValues List of fields to filter on
+     * $param bool $hardDelete Force hard-delete
+     *
+     * @return $this
+     */
+    public function findAndDelete(array $fieldsWithValues = array(), $hardDelete = false)
+    {
+
+        if (count($fieldsWithValues) < 1) {
+            throw new \Exception("You need to specify at least on field to find and delete by.");
+        }
+
+        // check if the requested field exists for this model
+        foreach ($fieldsWithValues as $field => $value) {
+            if (!array_key_exists($field, get_object_vars($this))) {
+                throw new \Exception("`" . $field . "` is not a recognized property.");
+            } else {
+                $conditions[] = "`" . $field . "` = '" . Core\Database::escape($value) . "'";
+            }
+        }
+
+        if (static::TIMESTAMPS && static::SOFT_DELETES && !$hardDelete) {
+            $query = " UPDATE " . static::DB_TABLE . " "
+                    . "SET deleted_at = NOW() "
+                    . "WHERE 1=1 " . ((count($conditions)) ? ' AND ' . implode(' AND ', $conditions) : "") . " ";
+        } else {
+            $query = " DELETE "
+                    . "FROM " . static::DB_TABLE . " "
+                    . "WHERE 1=1 " . ((count($conditions)) ? ' AND ' . implode(' AND ', $conditions) : "") . " ";
+        }
+
+        Core\Database::query($query);
 
         return $this;
     }
