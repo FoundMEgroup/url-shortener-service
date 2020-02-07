@@ -20,12 +20,13 @@ class UrlShortener
      *
      * @return Url|UserUrl
      */
-    public static function create(string $extUrl, int $userId = null)
+    public static function create(string $extUrl, int $userId = null, bool $browserDetect = false)
     {
 
         // create a new URL entry
         $url = (new Models\Url)
                 -> setUrl($extUrl)
+                -> setBrowserDetect($browserDetect)
                 -> insert();
 
         // create a new Hash ID from the ID

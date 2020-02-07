@@ -82,11 +82,9 @@ class UserUrl extends BaseModel
         // delete url
         $url = (new Url) -> findByAndDelete(['id' => $this -> getUrlId()]);
         // delete url requests
-        // $url = (new UrlRequest) -> findByAndDelete(['url_id' => $this -> getUrlId()]);
+        $url = (new UrlRequest) -> findByAndDelete(['url_id' => $this -> getUrlId()]);
         // delete url aliasses
         $url = (new UrlAlias) -> findByAndDelete(['url_id' => $this -> getUrlId()]);
-        // delete url aliasses requests
-        // $url = (new UrlAliasRequest) -> findByAndDelete(['url_id' => $this -> getUrlId()]);
         // delete user url
         $url = (new UserUrl) -> findByAndDelete(['url_id' => $this -> getUrlId()]);
     }

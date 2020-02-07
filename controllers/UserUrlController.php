@@ -96,6 +96,7 @@ class UserUrlController extends BaseController
         // define required arguments/values
         $validationFields = [
             ['method' => Core\ValidatedRequest::METHOD_POST, 'field' => 'url', 'type' => Core\ValidatedRequest::TYPE_URL, 'required' => true,],
+            ['method' => Core\ValidatedRequest::METHOD_POST, 'field' => 'browserDetect', 'type' => Core\ValidatedRequest::TYPE_BOOLEAN, 'required' => false,],
         ];
 
         $validatedRequest = Core\ValidatedRequest::validate($request, $response, $validationFields, $args);
@@ -106,7 +107,7 @@ class UserUrlController extends BaseController
         $filteredInput = $validatedRequest -> getFilteredInput();
 
         // since it's public, no need to check for existing URL
-        $url = Core\UrlShortener::create($filteredInput['url'], $userId);
+        $url = Core\UrlShortener::create($filteredInput['url'], $userId, $filteredInput['browserdetect'] ?? false);
 
         return Core\Output::OK($response, $url);
     }
@@ -130,6 +131,8 @@ class UserUrlController extends BaseController
         // define required arguments/values
         $validationFields = [
             ['method' => Core\ValidatedRequest::METHOD_ARG, 'field' => 'userUrlId', 'type' => Core\ValidatedRequest::TYPE_INTEGER, 'required' => true,],
+            ['method' => Core\ValidatedRequest::METHOD_POST, 'field' => 'url', 'type' => Core\ValidatedRequest::TYPE_STRING, 'required' => false,],
+            ['method' => Core\ValidatedRequest::METHOD_POST, 'field' => 'browserDetect', 'type' => Core\ValidatedRequest::TYPE_BOOLEAN, 'required' => false,],
         ];
 
         $validatedRequest = Core\ValidatedRequest::validate($request, $response, $validationFields, $args);
@@ -146,6 +149,18 @@ class UserUrlController extends BaseController
         if ($userUrl -> getUserId() !== $userId) {
             return Core\Output::NotAuthorized($response);
         }
+
+        $url = (new Models\Url) -> getById($userUrl -> getUrlId());
+        if (!$url) {
+            return Core\Output::ModelNotFound($response, 'Url', $userUrl -> getUrlId());
+        }
+
+        $url
+                -> setUrl($filteredInput['url'] ?? null)
+                -> setBrowserDetect($filteredInput['brrowserDetect'] ?? null)
+                -> update();
+
+        $userUrl -> addAttribute('url', $url);
 
         return Core\Output::OK($response, $userUrl);
     }
