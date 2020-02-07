@@ -16,59 +16,33 @@ class UrlTracker
     /**
      * Track the request
      *
-     * @param int $urlId The ID of the URL
-     * @param int $urlAliasId The ID of the URL Alias
+     * @param Models\UrlRequest $urlRequest
      *
      * @return void
      */
-    public static function track(int $urlId, int $urlAliasId = null)
+    public static function track(Models\UrlRequest $urlRequest): void
     {
 
-        $trackRequest = (new Models\UrlRequest)
-                -> setUrlId($urlId)
-                -> setUrlAliasId($urlAliasId);
-
-        if ($remoteAddress = Auth::getRemoteAddress()) {
-
-            $trackRequest
-                    -> setRemoteAddress($remoteAddress);
+        if ($urlRequest -> getRemoteAddress()) {
 
             // get location info for remote address
             try {
 
-                $locationData = self::getLocationData($remoteAddress);
-
-                // if any data available..
-                if ($locationData && isset($locationData -> country)) {
-                    $trackRequest
-                            -> setCountryIso($locationData -> country -> isoCode)
-                            -> setCountryName($locationData -> country -> name);
-                }
-                if ($locationData && isset($locationData -> mostSpecificSubdivision)) {
-                    $trackRequest
-                            -> setDivisionIso($locationData -> mostSpecificSubdivision -> isoCode)
-                            -> setDivisionName($locationData -> mostSpecificSubdivision -> name);
-                }
-                if ($locationData && isset($locationData -> city)) {
-                    $trackRequest
-                            -> setCity($locationData -> city -> name);
-                }
-                if ($locationData && isset($locationData -> postal)) {
-                    $trackRequest
-                            -> setPostalCode($locationData -> postal -> code);
-                }
-                if ($locationData && isset($locationData -> location)) {
-                    $trackRequest
-                            -> setLatitude($locationData -> location -> latitude)
-                            -> setLongitude($locationData -> location -> longitude);
+                $locationData = self::getLocationData($urlRequest -> getRemoteAddress());
+                if ($locationData) {
+                    $urlRequest
+                            -> setGeolocation($locationData['data'] ?? null)
+                            -> setCountryIso($locationData['countryIso'] ?? null)
+                            -> setCity($locationData['city'] ?? null)
+                            -> setLatitude($locationData['latitude'] ?? null)
+                            -> setLongitude($locationData['longitude'] ?? null);
                 }
             } catch (\Exception $ex) {
 
             }
         }
 
-        $trackRequest
-                -> insert();
+        $urlRequest -> update();
 
         return;
     }
@@ -78,13 +52,38 @@ class UrlTracker
      *
      * @param string $remoteAddress
      *
-     * @return \GeoIp2\Model\City
+     * @return array
      */
-    public static function getLocationData(string $remoteAddress)
+    public static function getLocationData(string $remoteAddress): array
     {
-        $reader = new Reader(Config::getInstance() -> Paths() -> statics . 'geo-data/GeoLite2-City.mmdb');
 
-        return $reader -> city($remoteAddress);
+        $result = [];
+
+        try {
+            $geoResponse = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip=' . $remoteAddress));
+            if ($geoResponse) {
+                $result['countryIso'] = $geoResponse['geoplugin_countryCode'] ?? null;
+                $result['city'] = $geoResponse['geoplugin_city'] ?? null;
+                $result['longitude'] = $geoResponse['geoplugin_longitude'] ?? null;
+                $result['latitude'] = $geoResponse['geoplugin_latitude'] ?? null;
+                $result['data'] = $geoResponse;
+            }
+        } catch (\Exception $ex) {
+            if (file_exists($remoteAddress)) {
+                $reader = new Reader(Config::getInstance() -> Paths() -> statics . 'geo-data/GeoLite2-City.mmdb');
+
+                $ctiy = $reader -> city($remoteAddress);
+
+                $result['countryIso'] = $ctiy -> country -> isoCode ?? null;
+                $result['city'] = $ctiy -> city -> name ?? null;
+                $result['longitude'] = $ctiy -> location -> latitude ?? null;
+                $result['latitude'] = $ctiy -> location -> longitude ?? null;
+                $result['data'] = $ctiy;
+            }
+        }
+
+
+        return $result;
     }
 
 }

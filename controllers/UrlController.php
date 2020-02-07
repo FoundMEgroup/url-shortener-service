@@ -67,8 +67,7 @@ class UrlController extends BaseController
                 return Core\Output::NotFound($response, 'URL associated with `' . $filteredInput['alias'] . '` not found.');
             }
 
-            // do tracker magic
-            Core\UrlTracker::track($url -> getId(), $urlAlias -> getId());
+            $urlRequest = Models\UrlRequest::init($url -> getId(), $urlAlias -> getId());
 
             //
         } else if ($fieldName === 'code') {
@@ -78,14 +77,14 @@ class UrlController extends BaseController
                 return Core\Output::ModelNotFound($response, 'Url', $filteredInput['code'], 'code');
             }
 
-            // do tracker magic
-            Core\UrlTracker::track($url -> getId());
+            $urlRequest = Models\UrlRequest::init($url -> getId());
 
             //
         }
 
+
         // url found, code exits.. do redirecting magic
-        $url -> redirectToUrl();
+        $url -> redirectToUrl($urlRequest);
     }
 
     /**
