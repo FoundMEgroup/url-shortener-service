@@ -105,11 +105,13 @@ class Config
 
         // load the paths-config
         $this -> paths = (object) [
-                    'statics'     => __DIR__ . '/..' . getenv('PATH_STATICS'),
-                    'statics_url' => getenv('BASE_URL') . getenv('PATH_STATICS'),
-                    'images'      => __DIR__ . '/..' . getenv('PATH_STATICS_IMAGES'),
-                    'images_url'  => getenv('BASE_URL') . getenv('PATH_STATICS_IMAGES'),
-                    'base_url'    => getenv('BASE_URL'),
+                    'statics'       => __DIR__ . '/..' . getenv('PATH_STATICS'),
+                    'statics_url'   => getenv('BASE_URL') . getenv('PATH_STATICS'),
+                    'images'        => __DIR__ . '/..' . getenv('PATH_STATICS_IMAGES'),
+                    'images_url'    => getenv('BASE_URL') . getenv('PATH_STATICS_IMAGES'),
+                    'templates'     => __DIR__ . '/..' . getenv('PATH_STATICS_TEMPLATES'),
+                    'templates_url' => getenv('BASE_URL') . getenv('PATH_STATICS_TEMPLATES'),
+                    'base_url'      => getenv('BASE_URL'),
         ];
 
         // load the salts-config
