@@ -35,9 +35,9 @@ You can put this within a `.htaccess` file or within the `virtual-host` configur
 
 ```
 RewriteEngine On
-# | -------------------------------------------------------------------------------------------------------
+# | ----------------------------------------------------------------------------------------------------
 # | Handle the actual short URL's and aliasses and redirect them to the service.
-# | -------------------------------------------------------------------------------------------------------
+# | ----------------------------------------------------------------------------------------------------
 # |
 # | `c/` and `a/` are just example paths, but you can rewrite the entire root or use different paths.
 # | The example here would be:
@@ -46,7 +46,7 @@ RewriteEngine On
 # |
 # | Make sure you redirect to your hosted service with the correct arguments `code` and or `alias`.
 # |
-# | -------------------------------------------------------------------------------------------------------
+# | ----------------------------------------------------------------------------------------------------
 
 # Short-codes
 RewriteRule ^c/(.*)$ https://api.shortdomain.com/url?code=$1 [R=301,NC,L]
@@ -62,29 +62,30 @@ RewriteRule ^a/(.*)$ https://api.shortdomain.com/url?alias=$1 [R=301,NC,L]
 ### Public endpoints
 #### Handle Short-URL
 
-Go to the associated URL for given code/alias.
-| **Method**    | `GET` or `POST` |
-| **Endpoint**  | `/url` |
-| **Arguments** | `code` or `alias` |
-| **Example**   | `GET /url?code=1ab2c3d4` |
+Go to the associated URL for given code/alias.  
+| **Method**    | `GET` or `POST`   
+| **Endpoint**  | `/url`   
+| **Arguments** | `code` or `alias`   
+| **Example**   | `GET /url?code=1ab2c3d4`  
 
-Alias endpoints:
-| **Method**    | `GET` or `POST` |
-| **Endpoint**  | `/c/:code` |
-| **Example**   | `GET /c/1ab2c3d4` |
+Alias endpoints:  
+| **Method**    | `GET` or `POST`  
+| **Endpoint**  | `/c/:code`  
+| **Example**   | `GET /c/1ab2c3d4`  
 
-| **Method**    | `GET` or `POST` |
-| **Endpoint**  | `/a/:alias` |
-| **Example**   | `GET /a/1ab2c3d4` |
+
+| **Method**    | `GET` or `POST`  
+| **Endpoint**  | `/a/:alias`  
+| **Example**   | `GET /a/1ab2c3d4`  
 
 
 #### Create new Short URL
-Create a new shortened URL (as an anonymous user)
+Create a new shortened URL (as an anonymous user)  
 
-| **Method**    | `POST` |
-| **Endpoint**  | `/urls` |
-| **Payload**   | `url:string` |
-| **Example**   | `POST /urls` `{ url: 'www.google.com' }` |
+| **Method**    | `POST`  
+| **Endpoint**  | `/urls`  
+| **Payload**   | `url:string`  
+| **Example**   | `POST /urls` `{ url: 'www.google.com' }`  
 
 #### Validate user account (login)
 
