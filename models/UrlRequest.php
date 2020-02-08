@@ -130,6 +130,92 @@ class UrlRequest extends BaseModel
     }
 
     /**
+     * Get list of last requests for given Url ID
+     *
+     * @param int $urlId
+     * @param int $take
+     *
+     * @return array
+     */
+    public function getLastRequestsForUrlId(int $urlId, int $take = 50): array
+    {
+        $response = [];
+        $query = " SELECT * "
+                . "FROM " . static::DB_TABLE . " "
+                . "WHERE url_id = " . Core\Database::escape($value) . " "
+                . ((static::SOFT_DELETES) ? " AND " . static::DB_TABLE . ".deleted_at IS NULL " : "")
+                . "ORRDER BY id DESC "
+                . "LIMIT $take;";
+
+        $result = Core\Database::query($query);
+        while ($row = $result -> fetch_assoc()) {
+            $resource = (new $this) -> map($row);
+            $response[] = $resource;
+        }
+        return $response;
+    }
+
+    /**
+     * Get overview for give Url ID
+     *
+     * @param int $urlId
+     * 
+     * @return array
+     */
+    public function getOverviewForUrlId(int $urlId): array
+    {
+        $overview = [
+            'total'           => 0,
+            'total_via_alias' => 0,
+            'top_countries'   => [],
+            'top_languages'   => [],
+            'top_platforms'   => [],
+            'top_browsers'    => [],
+        ];
+
+        $query = " SELECT SUM(1) AS total, SUM(IF(url_alias_id iS NULL, 0, 1)) As total_alias "
+                . "FROM " . static::DB_TABLE . " "
+                . "WHERE url_id = " . Core\Database::escape($value) . " "
+                . ((static::SOFT_DELETES) ? " AND " . static::DB_TABLE . ".deleted_at IS NULL " : "");
+        $result = Core\Database::query($query);
+
+        $groupings = [
+            [
+                'key'   => 'country_iso',
+                'label' => 'top_countries',
+            ],
+            [
+                'key'   => 'language',
+                'label' => 'top_languages',
+            ],
+            [
+                'key'   => 'platform',
+                'label' => 'top_platforms',
+            ],
+            [
+                'key'   => 'browser',
+                'label' => 'top_browsers',
+            ]
+        ];
+
+        foreach ($groupings as $key => $grouping) {
+            $query = "SELECT COUNT(*) AS counter, {$grouping['key']} AS label "
+                    . "FROM " . static::DB_TABLE . " "
+                    . "WHERE url_id = " . Core\Database::escape($value) . " "
+                    . ((static::SOFT_DELETES) ? " AND " . static::DB_TABLE . ".deleted_at IS NULL " : "")
+                    . "GROUP BY {$grouping['key']} "
+                    . "ORDER BY COUNT(*);"
+                    . "LIMIT 10 ";
+            $result = Core\Database::query($query);
+            while ($row = $result -> fetch_assoc()) {
+                $overview[$grouping['label']][$row['label']] = $row['counter'];
+            }
+        }
+
+        return $overview;
+    }
+
+    /**
      * Get URL ID
      *
      * @return int URL ID
@@ -347,7 +433,7 @@ class UrlRequest extends BaseModel
      * Set Language
      *
      * @param string $language language
-     * 
+     *
      * @return \BertMaurau\URLShortener\Models\UrlRequest
      */
     public function setLanguage(string $language = null): UrlRequest
