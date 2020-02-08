@@ -15,9 +15,9 @@ By default, every URL request gets tracked. This includes basic timestamps and t
 
 ### Private (needs authentication)
 
+- User Account
 - URL Management
 - URL Aliasses
-- Browser Detect
 - Analytics
 
 
@@ -60,12 +60,12 @@ RewriteRule ^a/(.*)$ https://api.shortdomain.com/url?alias=$1 [R=301,NC,L]
 
 ## API
 ### Public endpoints
-#### Handle Short-URL
+#### URLs
 
 Go to the associated URL for given code/alias.  
 | **Method**    | `GET` or `POST`   
 | **Endpoint**  | `/url`   
-| **Arguments** | `code` or `alias`   
+| **Parameters**| `code` or `alias`   
 | **Example**   | `GET /url?code=1ab2c3d4`  
 
 Alias endpoints:  
@@ -76,149 +76,117 @@ Alias endpoints:
 
 | **Method**    | `GET` or `POST`  
 | **Endpoint**  | `/a/:alias`  
-| **Example**   | `GET /a/1ab2c3d4`  
+| **Example**   | `GET /a/my-short-url`  
 
-
-#### Create new Short URL
 Create a new shortened URL (as an anonymous user)  
 
 | **Method**    | `POST`  
 | **Endpoint**  | `/urls`  
 | **Payload**   | `url:string`  
-| **Example**   | `POST /urls` `{ url: 'www.google.com' }`  
+| **Example**   | `POST /urls { url: 'www.google.com', browser_detect: true }`  
 
-#### Validate user account (login)
+#### Auth
 
-Validate user credentials and request accessToken.
+Validate user credentials and request accessToken.  
 
-*Method:* POST
+| **Method**    | `POST`  
+| **Endpoint**  | `/validate-login`  
+| **Payload**   | `email:string | password: string`  
+| **Example**   | `POST /validate-login { email: 'j.doe@company.com', password: 'cd4d9b143310f3b4a89cb9619addd588' }`  
 
-*Endpoint:* `/validate-login`
-
-*Required Payload:* `email:string | password: string`
-
-*Example:* POST `/validate-login` `{ email: 'j.doe@company.com', password: 'cd4d9b143310f3b4a89cb9619addd588' }`
-
+Create a new shortened URL (as an anonymous user)  
   
-
-#### Create a new user account (register)
-
-  
-
-Create a new shortened URL (as an anonymous user)
-
-  
-
-*Method:* POST
-
-*Endpoint:* `/register`
-
-*Required Payload:* `email:string | password: string`
-
-*Example:* POST `/register` `{ email: 'j.doe@company.com', password: 'cd4d9b143310f3b4a89cb9619addd588' }`
-
+| **Method**    | `POST`  
+| **Endpoint**  | `/register`  
+| **Payload**   | `email:string | password: string`  
+| **Example**   | `POST /register { email: 'j.doe@company.com', password: 'cd4d9b143310f3b4a89cb9619addd588' }`  
   
 
 ### Auth-required endpoints
 
-  
-
 #### User Account
 
-  
+Get authenticated user account info.  
 
-Get authenticated user account info
+| **Method**    | `GET`  
+| **Endpoint**  | `/me`  
+| **Example**   | `GET /me`  
 
-`GET /me`
 
-  
+Update user info.  
 
-Update user info
-
-`PATCH /me`
-
+| **Method**    | `PATCH`  
+| **Endpoint**  | `/me`  
+| **Payload**   | `first_name:string | last_name: string`  
+| **Example**   | `PATCH /me { first_name: 'bert' }`  
   
 
 Delete the user account
 
-`DELETE /me`
-
+| **Method**    | `DELETE`  
+| **Endpoint**  | `/me`  
+| **Example**   | `DELETE /me` 
   
 
-#### User URL's
+#### User URLs
 
-  
+Create a new shortened URL (as an anonymous user)  
 
-Get list of user created URL's
+| **Method**    | `POST`  
+| **Endpoint**  | `/urls`  
+| **Payload**   | `url:string`  
+| **Example**   | `POST /urls { url: 'www.google.com', browser_detect: true }`  
 
-`GET /my/urls`
 
-  
+Get list of user created URLs  
 
-Get specific URL
+| **Method**    | `GET`  
+| **Endpoint**  | `/my/urls`  
+| **Parameters**| `short_code | url | browser_detect | take | skip`  
+| **Example**   | `GET /my/urls?browser_detect=true&take=12&skip=0`  
 
-`GET /my/urls/:id`
+Get specific User URL
 
-  
-
-Create a new shortened URL (from the user account)
-
-`POST /my/urls`
-
-  
-
-Update a URL
-
-`PATCH /my/urls/:id`
-
-  
+| **Method**    | `GET`  
+| **Endpoint**  | `/my/urls/:userUrlId`  
+| **Example**   | `GET /my/urls/12`  
 
 Delete a URL
 
-`DELETE /my/urls/:id`
-
+| **Method**    | `DELETE`  
+| **Endpoint**  | `/my/urls/:userUrlId`  
+| **Payload**   | `delete_full: boolean`  
+| **Example**   | `DELETE /my/urls/12` 
   
+Update a URL.  
 
-Get analytics information for given URL
-
-`GET /my/urls/:id/analytics`
-
+| **Method**    | `PATCH`  
+| **Endpoint**  | `/my/urls/:id`  
+| **Payload**   | `url:string | browser_detect: boolean`  
+| **Example**   | `PATCH /my/urls/232 { browser_detect: true }`  
   
+Get overview for given URL
 
-#### User URL Aliasses
-
-  
-
-Get list of user created aliasses for given URL
-
-`GET /my/urls/:id/aliasses`
-
-  
-
-Get specific URL alias
-
-`GET /my/urls/:id/aliasses/:id`
-
-  
+| **Method**    | `GET`  
+| **Endpoint**  | `/my/urls/:urlId/overview`  
+| **Example**   | `GET /my/urls/3434/overview`
 
 Create a new alias for given URL
 
-`POST /my/urls/:id/aliasses`
-
+| **Method**    | `POST`  
+| **Endpoint**  | `/my/urls/:urlId/aliasses`  
+| **Payload**   | `alias:string`  
+| **Example**   | `POST /my/urls/12/aliasses { alias: 'my-short-code' }`  
   
-
 Update a URL alias
 
-`PATCH /my/urls/:id/aliasses/:id`
-
-  
+| **Method**    | `PATCH`  
+| **Endpoint**  | `/my/urls/:urlId/aliasses/:urlAliasId`  
+| **Payload**   | `alias:string`  
+| **Example**   | `PATCH /my/urls/12/aliasses { alias: 'my-short-code' }`  
 
 Delete a URL alias
 
-`DELETE /my/urls/:id/aliasses/:id`
-
-  
-
-Get analytics information for given URL alias
-
-`GET /my/urls/:id/aliasses/:id/analytics`
+| **Method**    | `DELETE`  
+| **Endpoint**  | `/my/urls/:userUrlId/aliasses/:urlAliasId`  
+| **Example**   | `DELETE /my/urls/12/aliasses/1` 
