@@ -209,6 +209,45 @@ class BaseModel
     }
 
     /**
+     * Load attributes
+     *
+     * @param array $attributes
+     *
+     * @return $this
+     */
+    public function setAttributes($attributes)
+    {
+        $this -> attributes = (array) $attributes;
+        return $this;
+    }
+
+    /**
+     * Get item from attributes
+     *
+     * @param string $attribute
+     *
+     * @return mixed
+     */
+    public function getAttribute($attribute)
+    {
+        return (isset($this -> attributes[$attribute])) ? $this -> attributes[$attribute] : null;
+    }
+
+    /**
+     * Delete attribute
+     *
+     * @param string $attribute
+     *
+     * @return void
+     */
+    public function deleteAttribute($attribute)
+    {
+        if (isset($this -> attributes[$attribute])) {
+            unset($this -> attributes[$attribute]);
+        }
+    }
+
+    /**
      * Get model by ID
      *
      * @param int $id The ID
@@ -240,16 +279,22 @@ class BaseModel
      *
      * @return $this
      */
-    public function findBy(array $fieldsWithValues = array(), int $take = 120, int $skip = 0)
+    public function findBy(array $fieldsWithValues = array(), $take = 120, $skip = 0)
     {
+
         // check if the requested field exists for this model
         foreach ($fieldsWithValues as $field => $value) {
             if (!array_key_exists($field, get_object_vars($this))) {
                 throw new \Exception("`" . $field . "` is not a recognized property.");
             } else {
-                $conditions[] = "`" . $field . "` = '" . Core\Database::escape($value) . "'";
+                if ($field !== 'attributes' && !is_null($value) && !empty($value) && is_callable(array($this, 'get' . ucfirst($field)))) {
+                    $conditions[] = "`" . $field . "` = '" . Core\Database::escape($value) . "'";
+                }
             }
         }
+
+        $take = $take ?? 120;
+        $skip = $skip ?? 0;
 
         $query = " SELECT * "
                 . "FROM " . static::DB_TABLE . " "
@@ -281,16 +326,19 @@ class BaseModel
      *
      * @return array
      */
-    public function getAll(array $filter = [], int $take = 120, int $skip = 0): array
+    public function getAll(array $filter = [], $take = 120, $skip = 0): array
     {
         // Build WHERE conditions
         $conditions = array();
         foreach ($filter as $field => $value) {
             // check if the requested filter is allowed or available.
-            if (in_array($field, static::FILTERS)) {
+            if (in_array($field, static::FILTERS) && !empty($value) && !is_null($value)) {
                 $conditions[] = "`$field` LIKE '%$value%'";
             }
         }
+
+        $take = $take ?? 120;
+        $skip = $skip ?? 0;
 
         $response = [];
         $query = " SELECT * "

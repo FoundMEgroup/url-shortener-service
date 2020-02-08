@@ -69,12 +69,14 @@ class ValidatedRequest
         // iterate the validation fields
         foreach ($validationFields as $key => $validationField) {
 
+            $value = null;
+
             switch ($validationField['method']) {
                 case self::METHOD_GET:
                     if (!isset($_GET[$validationField['field']]) && $validationField['required']) {
                         $instance -> isValid = false;
                         $instance -> output = Output::MissingParameter($response, $validationField['field']);
-                    } else {
+                    } else if (isset($_GET[$validationField['field']])) {
                         $value = self::filterInput(INPUT_GET, $validationField['field'], self::getFilterSanitizationType($validationField['type']));
                     }
                     break;
@@ -82,7 +84,7 @@ class ValidatedRequest
                     if (!isset($payload[$validationField['field']]) && $validationField['required']) {
                         $instance -> isValid = false;
                         $instance -> output = Output::MissingParameter($response, $validationField['field']);
-                    } else {
+                    } else if (isset($payload[$validationField['field']])) {
                         if ($validationField['type'] === self::TYPE_JSON) {
                             $value = $payload[$validationField['field']];
                         } else {
@@ -94,7 +96,7 @@ class ValidatedRequest
                     if (!isset($input[$validationField['field']]) && $validationField['required']) {
                         $instance -> isValid = false;
                         $instance -> output = Output::MissingParameter($response, $validationField['field']);
-                    } else {
+                    } else if (isset($input[$validationField['field']])) {
                         $value = self::filterVar($input[$validationField['field']], self::getFilterSanitizationType($validationField['type']));
                     }
                     break;
@@ -102,8 +104,9 @@ class ValidatedRequest
                     break;
             }
 
-            if (!$value) {
+            if (!$value && $validationField['required']) {
                 $instance -> isValid = false;
+                Output::Clear();
                 $instance -> output = Output::InvalidParameter($response, $validationField['field']);
             } else {
                 $instance -> filteredInput[$validationField['field']] = $value;

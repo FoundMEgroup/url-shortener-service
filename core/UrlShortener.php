@@ -18,7 +18,7 @@ class UrlShortener
      * @param string $extUrl The URL to shorten
      * @param int $userId The User ID (if created by an authenticated user)
      *
-     * @return Url|UserUrl
+     * @return Url
      */
     public static function create(string $extUrl, int $userId = null, bool $browserDetect = false)
     {
@@ -43,7 +43,7 @@ class UrlShortener
                     -> setUrlId($url -> getId())
                     -> insert();
 
-            $userUrl -> addAttribute('url', $url);
+            $url -> addAttribute('user_url', $userUrl);
 
             return $userUrl;
         } else {
