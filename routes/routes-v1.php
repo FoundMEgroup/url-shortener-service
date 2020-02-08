@@ -47,6 +47,8 @@ $route -> map('POST', '/register', [new Controllers\UserController, 'create']);
  */
 $route -> group('', function ($route) {
 
+
+
     /**
      * -------------------------------------------------------------------------
      *  Auth-user
@@ -63,25 +65,17 @@ $route -> group('', function ($route) {
      */
     $route -> map('GET', '/my/urls', [new Controllers\UserUrlController, 'index']);
     $route -> map('GET', '/my/urls/{userUrlId}', [new Controllers\UserUrlController, 'show']);
+
+    $route -> map('GET', '/my/urls/{userUrlId}/overview', [new Controllers\UserUrlController, 'overview']);
+
     $route -> map('POST', '/my/urls', [new Controllers\UserUrlController, 'create']);
-    $route -> map('PATCH', '/my/urls/{userUrlId}', [new Controllers\UserUrlController, 'update']);
-    $route -> map('DELTE', '/my/urls/{userUrlId}', [new Controllers\UserUrlController, 'delete']);
-
-    $route -> map('GET', '/my/urls/{userUrlId}/analytics', [new Controllers\UserUrlController, 'analytics']);
-
-
-    /**
-     * -------------------------------------------------------------------------
-     *  Auth-user URL aliases
-     * -------------------------------------------------------------------------
-     */
-    $route -> map('GET', '/my/urls/{userUrlId}/aliasses', [new Controllers\UserUrlAliasController, 'index']);
-    $route -> map('GET', '/my/urls/{userUrlId}/aliasses/{urlAliasId}', [new Controllers\UserUrlAliasController, 'show']);
     $route -> map('POST', '/my/urls/{userUrlId}/aliasses', [new Controllers\UserUrlAliasController, 'create']);
-    $route -> map('PATCH', '/my/urls/{userUrlId}/aliasses/{urlAliasId}', [new Controllers\UserUrlAliasController, 'update']);
-    $route -> map('DELTE', '/my/urls/{userUrlId}/aliasses/{urlAliasId}', [new Controllers\UserUrlAliasController, 'delete']);
 
-    $route -> map('GET', '/my/urls/{userUrlId}/aliasses/{urlAliasId}/analytics', [new Controllers\UserUrlAliasController, 'analytics']);
+    $route -> map('DELETE', '/my/urls/{userUrlId}', [new Controllers\UserUrlController, 'delete']);
+    $route -> map('DELETE', '/my/urls/{userUrlId}/aliasses/{aliasId}', [new Controllers\UserUrlAliasController, 'delete']);
+
+    $route -> map('PATCH', '/my/urls/{userUrlId}', [new Controllers\UserUrlController, 'update']);
+    $route -> map('PATCH', '/my/urls/{userUrlId}/aliasses/{aliasId}', [new Controllers\UserUrlAliasController, 'update']);
 
 
     // end
