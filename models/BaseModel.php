@@ -287,7 +287,7 @@ class BaseModel
             if (!array_key_exists($field, get_object_vars($this))) {
                 throw new \Exception("`" . $field . "` is not a recognized property.");
             } else {
-                if ($field !== 'attributes' && !is_null($value) && !empty($value) && is_callable(array($this, 'get' . ucfirst($field)))) {
+                if ($field !== 'attributes' && !is_null($value) && !empty($value)) {
                     $conditions[] = "`" . $field . "` = '" . Core\Database::escape($value) . "'";
                 }
             }
@@ -373,7 +373,7 @@ class BaseModel
         // This should be modified to be a bit more secure, but normally public
         // properties will be filtered out, as well as the attributes property.
         foreach (get_object_vars($this) as $key => $value) {
-            if ($key !== 'attributes' && !empty($value) && is_callable(array($this, 'get' . str_replace('_', '', ucwords($key, '_'))))) {
+            if ($key !== 'attributes' && !empty($value)) {
                 $keys[] = '`' . Core\Database::escape($key) . '`';
                 $values[] = Core\Database::escape($value);
             }
@@ -412,7 +412,7 @@ class BaseModel
         // This should be modified to be a bit more secure, but normally public
         // properties will be filtered out, as well as the attributes property.
         foreach (get_object_vars($this) as $key => $value) {
-            if ($key !== 'attributes' && !empty($value) && is_callable(array($this, 'get' . str_replace('_', '', ucwords($key, '_'))))) {
+            if ($key !== 'attributes' && !empty($value)) {
                 $update[] = '`' . Core\Database::escape($key) . '`' . " = '" . Core\Database::escape($value) . "'";
             }
         }

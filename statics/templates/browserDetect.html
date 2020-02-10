@@ -48,7 +48,7 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 204) {
                 // redirect
-                // window.location.href="{{URL}}";
+                window.location.href="{{URL}}";
             }
         };
         var data = JSON.stringify({browserDetect: info});
