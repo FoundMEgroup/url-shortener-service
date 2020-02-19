@@ -59,6 +59,22 @@ class UserAuthToken extends BaseModel
     public $is_active;
 
     /**
+     * Is Destroyed
+     * @var bool
+     */
+    public $is_destroyed;
+
+    /**
+     * Check if token is valid (based on all conditions)
+     *
+     * @return bool Valid
+     */
+    public function isValid(): bool
+    {
+        return ($this -> isActive() && !$this -> isDestroyed() && !$this -> isDisabled() && !$this -> isExpired());
+    }
+
+    /**
      * Check if token is expired
      *
      * @return bool Expired
@@ -89,6 +105,16 @@ class UserAuthToken extends BaseModel
     }
 
     /**
+     * Check if token is destroyed
+     *
+     * @return bool Destroyed
+     */
+    public function isDestroyed(): bool
+    {
+        return $this -> getIsDestroyed();
+    }
+
+    /**
      * Register a new Auth Token for given User ID
      *
      * @param int $userId User ID
@@ -103,16 +129,18 @@ class UserAuthToken extends BaseModel
         $userAuthToken = (new self)
                 -> setUserId($userId)
                 -> setIsActive(true)
+                -> setIsDestroyed(false)
                 -> setEnv($env)
                 -> setUid(Core\Generator::Uid())
                 -> setExpiresAt($newDate)
                 -> insert();
 
         // generate a new JWT Token
-        return Modules\JWT::encode([
-                    'env'     => Core\Config::getInstance() -> API() -> env,
-                    'userId'  => $userId,
-                    'tokenId' => $userAuthToken -> getUid(),
+        return Modules\JWT::encode(
+                        [
+                            'env'      => Core\Config::getInstance() -> API() -> env,
+                            'userId'   => $userId,
+                            'tokenUid' => $userAuthToken -> getUid(),
                         ], Core\Config::getInstance() -> Salts() -> token);
     }
 
@@ -163,6 +191,16 @@ class UserAuthToken extends BaseModel
     public function getIsActive(): bool
     {
         return $this -> is_active;
+    }
+
+    /**
+     * Get Is Destroyed
+     *
+     * @return bool Is Destroyed
+     */
+    public function getIsDestroyed(): bool
+    {
+        return $this -> is_destroyed;
     }
 
     /**
@@ -241,6 +279,20 @@ class UserAuthToken extends BaseModel
     public function setIsActive($isActive): UserAuthToken
     {
         $this -> is_active = (boolean) $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Set Is Destroyed
+     *
+     * @param any $isDestroyed is_destroyed
+     *
+     * @return \BertMaurau\URLShortener\Models\UserAuthToken
+     */
+    public function setIsDestroyed($isDestroyed): UserAuthToken
+    {
+        $this -> is_destroyed = (boolean) $isDestroyed;
 
         return $this;
     }

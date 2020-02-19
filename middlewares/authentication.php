@@ -42,14 +42,23 @@ $authentication = function ($request, $response, callable $next) {
                 return Core\Output::NotAuthorized($response, "The provided authToken does not match the current Environment.");
             }
 
-            // check for expired
-            if ($foundAuthToken -> isExpired()) {
-                return Core\Output::NotAuthorized($response, "The provided authToken has expired.");
-            }
+            // check if token is valid (all conditions), if not, check which condition failed
+            if (!$foundAuthToken -> isValid()) {
 
-            // check for disabled
-            if ($foundAuthToken -> isDisabled()) {
-                return Core\Output::NotAuthorized($response, "The provided authToken has been disabled.");
+                // check for expired
+                if ($foundAuthToken -> isExpired()) {
+                    return Core\Output::NotAuthorized($response, "The provided authToken has expired.");
+                }
+
+                // check for disabled
+                if ($foundAuthToken -> isDisabled()) {
+                    return Core\Output::NotAuthorized($response, "The provided authToken has been disabled.");
+                }
+
+                // check for destoryed
+                if ($foundAuthToken -> isDestroyed()) {
+                    return Core\Output::NotAuthorized($response, "The provided authToken has been destroyed.");
+                }
             }
 
             // assign the data to the auth object
