@@ -47,7 +47,7 @@ $route -> map('POST', '/register', [new Controllers\UserController, 'create']);
  */
 $route -> group('', function ($route) {
 
-
+    $route -> map('POST', '/sign-out', [new Controllers\UserController, 'logout']);
 
     /**
      * -------------------------------------------------------------------------

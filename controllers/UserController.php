@@ -59,6 +59,37 @@ class UserController extends BaseController
     }
 
     /**
+     * Destroy the currently active/used UserAuthToken
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param array $args
+     *
+     * @return ResponseInterface
+     */
+    public function logout(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    {
+        $userId = Core\Auth::getUserId();
+        if (!$userId) {
+            return Core\Output::NotAuthorized($response);
+        }
+
+        // if the function gets to here, authToken is valid and linked to current user.
+        $tokenUid = Core\Auth::getTokenUid();
+
+        // get the model and destory it
+        $userAuthToken = (new Models\UserAuthToken) -> findBy(['uid' => $tokenUid], $take = 1);
+        if (!$userAuthToken) {
+            // should..not..happen?
+            return Core\Output::ServerError($response, 'UserAuthToken could not be loaded?');
+        }
+
+        $userAuthToken -> setIsDestroyed(true) -> update();
+
+        return Core\Output::NoContent($response);
+    }
+
+    /**
      * Show the currently authenticated user
      *
      * @param ServerRequestInterface $request
