@@ -32,14 +32,8 @@ class UrlController extends BaseController
         } else if (isset($args['code']) && $code = Core\ValidatedRequest::filterVar($args['code'])) {
             $fieldName = 'code';
             $fieldInput = Core\ValidatedRequest::METHOD_ARG;
-        } else if ($alias = Core\ValidatedRequest::filterInput(INPUT_GET, 'alias')) {
-            $fieldName = 'alias';
-            $fieldInput = Core\ValidatedRequest::METHOD_GET;
-        } else if (isset($args['alias']) && $alias = Core\ValidatedRequest::filterVar($args['alias'])) {
-            $fieldName = 'alias';
-            $fieldInput = Core\ValidatedRequest::METHOD_ARG;
         } else {
-            return Core\Output::MissingParameter($response, 'Missing URL parameter code|alias.');
+            return Core\Output::MissingParameter($response, 'Missing URL parameter code.');
         }
 
         // define required arguments/values
@@ -54,34 +48,12 @@ class UrlController extends BaseController
 
         $filteredInput = $validatedRequest -> getFilteredInput();
 
-        if ($fieldName === 'alias') {
-
-            $urlAlias = (new Models\UrlAlias) -> findBy(['alias' => $filteredInput['alias']], $take = 1);
-            if (!$urlAlias) {
-                return Core\Output::ModelNotFound($response, 'UrlAlias', $filteredInput['alias'], 'alias');
-            }
-
-            // get the URL for given alias
-            $url = (new Models\Url) -> getById($urlAlias -> getUrlId());
-            if (!$url) {
-                return Core\Output::NotFound($response, 'URL associated with `' . $filteredInput['alias'] . '` not found.');
-            }
-
-            $urlRequest = Models\UrlRequest::init($url -> getId(), $urlAlias -> getId());
-
-            //
-        } else if ($fieldName === 'code') {
-
-            $url = (new Models\Url) -> findBy(['short_code' => $filteredInput['code']], $take = 1);
-            if (!$url) {
-                return Core\Output::ModelNotFound($response, 'Url', $filteredInput['code'], 'code');
-            }
-
-            $urlRequest = Models\UrlRequest::init($url -> getId());
-
-            //
+        $url = (new Models\Url) -> findBy(['short_code' => $filteredInput['code']], $take = 1);
+        if (!$url) {
+            return Core\Output::ModelNotFound($response, 'Url', $filteredInput['code'], 'code');
         }
 
+        $urlRequest = Models\UrlRequest::init($url -> getId());
 
         // url found, code exits.. do redirecting magic
         $url -> redirectToUrl($urlRequest);

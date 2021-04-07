@@ -47,13 +47,6 @@ if (Core\ValidatedRequest::filterInput(INPUT_SERVER, 'REQUEST_METHOD') === 'OPTI
     die('OK');
 }
 
-// log any incoming requests
-try {
-    Models\LogRequest::register();
-} catch (\Exception $ex) {
-    // do something
-}
-
 // -----------------------------------------------------------------------------
 // Start the routing build-up
 // -----------------------------------------------------------------------------

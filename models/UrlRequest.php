@@ -34,82 +34,10 @@ class UrlRequest extends BaseModel
     protected $url_id;
 
     /**
-     * Url Alias ID
-     * @var integer
-     */
-    public $url_alias_id;
-
-    /**
-     * GUID
-     * @var string
-     */
-    public $guid;
-
-    /**
      * Remote Address
      * @var string
      */
     public $remote_address;
-
-    /**
-     * Browser Detect
-     * @var \stdClass
-     */
-    public $browser_detect;
-
-    /**
-     * Language
-     * @var string
-     */
-    public $language;
-
-    /**
-     * Platofmr
-     * @var string
-     */
-    public $platform;
-
-    /**
-     * Browserr
-     * @var string
-     */
-    public $browser;
-
-    /**
-     * Geolocation
-     * @var \stdClass
-     */
-    public $geolocation;
-
-    /**
-     * Country ISO
-     * @var string
-     */
-    public $country_iso;
-
-    /**
-     * Region
-     * @var string
-     */
-    public $region;
-
-    /**
-     * City
-     * @var string
-     */
-    public $city;
-
-    /**
-     * Latitude
-     * @var float
-     */
-    public $latitude;
-
-    /**
-     * Longitude
-     * @var float
-     */
-    public $longitude;
 
     /**
      * Init a new UrlRequest used for the tracker
@@ -123,8 +51,6 @@ class UrlRequest extends BaseModel
     {
         return (new self)
                         -> setUrlId($urlId)
-                        -> setUrlAliasId($urlAliasId)
-                        -> setGuid(Core\Generator::GUIDv4())
                         -> setRemoteAddress(Core\Auth::getRemoteAddress())
                         -> insert();
     }
@@ -156,66 +82,6 @@ class UrlRequest extends BaseModel
     }
 
     /**
-     * Get overview for give Url ID
-     *
-     * @param int $urlId
-     * 
-     * @return array
-     */
-    public function getOverviewForUrlId(int $urlId): array
-    {
-        $overview = [
-            'total'           => 0,
-            'total_via_alias' => 0,
-            'top_countries'   => [],
-            'top_languages'   => [],
-            'top_platforms'   => [],
-            'top_browsers'    => [],
-        ];
-
-        $query = " SELECT SUM(1) AS total, SUM(IF(url_alias_id iS NULL, 0, 1)) As total_alias "
-                . "FROM " . static::DB_TABLE . " "
-                . "WHERE url_id = " . Core\Database::escape($value) . " "
-                . ((static::SOFT_DELETES) ? " AND " . static::DB_TABLE . ".deleted_at IS NULL " : "");
-        $result = Core\Database::query($query);
-
-        $groupings = [
-            [
-                'key'   => 'country_iso',
-                'label' => 'top_countries',
-            ],
-            [
-                'key'   => 'language',
-                'label' => 'top_languages',
-            ],
-            [
-                'key'   => 'platform',
-                'label' => 'top_platforms',
-            ],
-            [
-                'key'   => 'browser',
-                'label' => 'top_browsers',
-            ]
-        ];
-
-        foreach ($groupings as $key => $grouping) {
-            $query = "SELECT COUNT(*) AS counter, {$grouping['key']} AS label "
-                    . "FROM " . static::DB_TABLE . " "
-                    . "WHERE url_id = " . Core\Database::escape($value) . " "
-                    . ((static::SOFT_DELETES) ? " AND " . static::DB_TABLE . ".deleted_at IS NULL " : "")
-                    . "GROUP BY {$grouping['key']} "
-                    . "ORDER BY COUNT(*);"
-                    . "LIMIT 10 ";
-            $result = Core\Database::query($query);
-            while ($row = $result -> fetch_assoc()) {
-                $overview[$grouping['label']][$row['label']] = $row['counter'];
-            }
-        }
-
-        return $overview;
-    }
-
-    /**
      * Get URL ID
      *
      * @return int URL ID
@@ -226,26 +92,6 @@ class UrlRequest extends BaseModel
     }
 
     /**
-     * Get URL Alias ID
-     *
-     * @return int URL Alias ID
-     */
-    public function getUrlAliasId(): ?int
-    {
-        return $this -> url_alias_id;
-    }
-
-    /**
-     * Get GUID
-     *
-     * @return string GUID
-     */
-    public function getGuid(): string
-    {
-        return $this -> guid;
-    }
-
-    /**
      * Get Remote Address
      *
      * @return string
@@ -253,105 +99,6 @@ class UrlRequest extends BaseModel
     public function getRemoteAddress(): ?string
     {
         return $this -> remote_address;
-    }
-
-    /**
-     * Get Browser Detect
-     *
-     * @return \stdClass
-     */
-    public function getBrowserDetect(): ?\stdClass
-    {
-        return $this -> browser_detect;
-    }
-
-    /**
-     * Get Language
-     *
-     * @return string
-     */
-    public function getLanguage(): ?string
-    {
-        return $this -> language;
-    }
-
-    /**
-     * Get Platform
-     *
-     * @return string
-     */
-    public function getPlatform(): ?string
-    {
-        return $this -> platform;
-    }
-
-    /**
-     * Get Browser
-     *
-     * @return string
-     */
-    public function getBrowser(): ?string
-    {
-        return $this -> browser;
-    }
-
-    /**
-     * Get Geolocation
-     * @return s\stdClass
-     */
-    public function getGeolocation(): ?\stdClass
-    {
-        return $this -> geolocation;
-    }
-
-    /**
-     * Get Country ISO
-     *
-     * @return string
-     */
-    public function getCountryIso(): ?string
-    {
-        return $this -> country_iso;
-    }
-
-    /**
-     * Get Region
-     *
-     * @return string
-     */
-    public function getRegion(): string
-    {
-        return $this -> region;
-    }
-
-    /**
-     * Get City
-     *
-     * @return string
-     */
-    public function getCity(): ?string
-    {
-        return $this -> city;
-    }
-
-    /**
-     * Get Latitude
-     *
-     * @return float
-     */
-    public function getLatitude(): ?float
-    {
-        return $this -> latitude;
-    }
-
-    /**
-     * Get Longitude
-     *
-     * @return float
-     */
-    public function getLongitude(): ?float
-    {
-        return $this -> longitude;
     }
 
     /**
@@ -369,34 +116,6 @@ class UrlRequest extends BaseModel
     }
 
     /**
-     * Set URL Alias ID
-     *
-     * @param int $urlAliasId url_alias_id
-     *
-     * @return \BertMaurau\URLShortener\Models\UrlRequest
-     */
-    public function setUrlAliasId(int $urlAliasId = null): UrlRequest
-    {
-        $this -> url_alias_id = $urlAliasId;
-
-        return $this;
-    }
-
-    /**
-     * Set GUID
-     *
-     * @param string $guid guid
-     *
-     * @return \BertMaurau\URLShortener\Models\UrlRequest
-     */
-    public function setGuid(string $guid): UrlRequest
-    {
-        $this -> guid = $guid;
-
-        return $this;
-    }
-
-    /**
      * Set Remote Address
      *
      * @param string $remoteAddress remote_address
@@ -406,155 +125,6 @@ class UrlRequest extends BaseModel
     public function setRemoteAddress(string $remoteAddress = null): UrlRequest
     {
         $this -> remote_address = $remoteAddress;
-
-        return $this;
-    }
-
-    /**
-     * Set Browser Detect
-     *
-     * @param mixed $browserDetect browser_detect
-     *
-     * @return \stdClass|null
-     */
-    public function setBrowserDetect($browserDetect = null): UrlRequest
-    {
-        if (is_string($browserDetect)) {
-            $browserDetect = json_decode($browserDetect);
-            if ($browserDetect === null && json_last_error() !== JSON_ERROR_NONE) {
-                $browserDetect = null;
-            }
-        }
-        $this -> browser_detect = $browserDetect;
-        return $this;
-    }
-
-    /**
-     * Set Language
-     *
-     * @param string $language language
-     *
-     * @return \BertMaurau\URLShortener\Models\UrlRequest
-     */
-    public function setLanguage(string $language = null): UrlRequest
-    {
-        $this -> language = $language;
-
-        return $this;
-    }
-
-    /**
-     * Set Platform
-     *
-     * @param string $platform platform
-     *
-     * @return \BertMaurau\URLShortener\Models\UrlRequest
-     */
-    public function setPlatform(string $platform = null): UrlRequest
-    {
-        $this -> platform = $platform;
-
-        return $this;
-    }
-
-    /**
-     * Set Browser
-     *
-     * @param string $browser browser
-     *
-     * @return \BertMaurau\URLShortener\Models\UrlRequest
-     */
-    public function setBrowser(string $browser = null): UrlRequest
-    {
-        $this -> browser = $browser;
-
-        return $this;
-    }
-
-    /**
-     * Set Geolocation
-     *
-     * @param mixed $geolocation geolocation
-     *
-     * @return \stdClass|null
-     */
-    public function setGeolocation($geolocation = null): UrlRequest
-    {
-        if (is_string($geolocation)) {
-            $geolocation = json_decode($geolocation);
-            if ($geolocation === null && json_last_error() !== JSON_ERROR_NONE) {
-                $geolocation = null;
-            }
-        }
-        $this -> geolocation = $geolocation;
-        return $this;
-    }
-
-    /**
-     * Set Country ISO
-     *
-     * @param string $countryIso country_iso
-     *
-     * @return \BertMaurau\URLShortener\Models\UrlRequest
-     */
-    public function setCountryIso(string $countryIso = null): UrlRequest
-    {
-        $this -> country_iso = $countryIso;
-
-        return $this;
-    }
-
-    /**
-     * Set Region
-     *
-     * @param string $region region
-     *
-     * @return \BertMaurau\URLShortener\Models\UrlRequest
-     */
-    public function setRegion(string $region = null): UrlRequest
-    {
-        $this -> region = $region;
-        return $this;
-    }
-
-    /**
-     * Set City
-     *
-     * @param string $city city
-     *
-     * @return \BertMaurau\URLShortener\Models\UrlRequest
-     */
-    public function setCity(string $city = null): UrlRequest
-    {
-        $this -> city = $city;
-
-        return $this;
-    }
-
-    /**
-     * Set Latitude
-     *
-     * @param float $latitude latitude
-     *
-     * @return \BertMaurau\URLShortener\Models\UrlRequest
-     */
-    public function setLatitude(float $latitude = null): UrlRequest
-    {
-        $this -> latitude = $latitude;
-
-        return $this;
-    }
-
-    /**
-     * Set Longitude
-     *
-     * @param float $longitude longitude
-     *
-     * @return \BertMaurau\URLShortener\Models\UrlRequest
-     */
-    public function setLongitude(float $longitude = null): UrlRequest
-    {
-        $this -> longitude = $longitude;
 
         return $this;
     }
