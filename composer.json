@@ -4,12 +4,9 @@
     "type": "project",
     "require": {
         "vlucas/phpdotenv": "^4.0@dev",
-        "phpmailer/phpmailer": "dev-master",
         "zendframework/zend-diactoros": "dev-release-1.8",
-        "lasserafn/php-initial-avatar-generator": "dev-master",
         "league/route": "3.x-dev",
         "hashids/hashids": "^4.0@dev",
-        "geoip2/geoip2": "~2.0",
         "php": "^7.3.12"
     },
     "license": "MIT",

@@ -63,7 +63,7 @@ class Config
     public function __construct()
     {
         // load the .env
-        $dotenv = \Dotenv\Dotenv::create(__DIR__ . '/../env/');
+        $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/../env/');
         $dotenv -> load();
 
         // load the api-config

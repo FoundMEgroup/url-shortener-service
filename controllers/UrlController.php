@@ -84,7 +84,7 @@ class UrlController extends BaseController
         $filteredInput = $validatedRequest -> getFilteredInput();
 
         // since it's public, no need to check for existing URL
-        $url = Core\UrlShortener::create($filteredInput['url']);
+        $url = Core\UrlShortener::create($filteredInput['url'], Core\Auth::getUserId());
 
         return Core\Output::OK($response, $url);
     }

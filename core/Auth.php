@@ -17,7 +17,6 @@ class Auth
     // Put auth items here for easier access (JWT token data values)
     // Don't forget to add the necessary getter/setter.
     private static $userId;
-    private static $tokenUid;
 
     /**
      * Assign the Auth values
@@ -189,25 +188,6 @@ class Auth
     public static function getUserId()
     {
         return self::$userId;
-    }
-
-    /**
-     * Set the Token UID
-     *
-     * @param string $tokenUid The Token UID
-     */
-    private static function setTokenUid(string $tokenUid)
-    {
-        self::$tokenUid = $tokenUid;
-    }
-
-    /**
-     * Get the Token UID
-     * @return string The Token UID
-     */
-    public static function getTokenUid()
-    {
-        return self::$tokenUid;
     }
 
 }

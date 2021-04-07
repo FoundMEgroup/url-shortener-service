@@ -56,29 +56,19 @@ class UrlRequest extends BaseModel
     }
 
     /**
-     * Get list of last requests for given Url ID
+     * Get total amount of clicks for given URL ID
      *
      * @param int $urlId
-     * @param int $take
      *
-     * @return array
+     * @return int
      */
-    public function getLastRequestsForUrlId(int $urlId, int $take = 50): array
+    public static function getClicksForUrlId(int $urlId)
     {
-        $response = [];
-        $query = " SELECT * "
-                . "FROM " . static::DB_TABLE . " "
-                . "WHERE url_id = " . Core\Database::escape($value) . " "
-                . ((static::SOFT_DELETES) ? " AND " . static::DB_TABLE . ".deleted_at IS NULL " : "")
-                . "ORRDER BY id DESC "
-                . "LIMIT $take;";
-
+        $query = "
+            SELECT COUNT(*) as clicks FROM url_requests WHERE url_id = " . Core\Database::escape($urlId) . ";
+            ";
         $result = Core\Database::query($query);
-        while ($row = $result -> fetch_assoc()) {
-            $resource = (new $this) -> map($row);
-            $response[] = $resource;
-        }
-        return $response;
+        return (int) $result -> fetch_assoc()['clicks'] ?? 0;
     }
 
     /**
