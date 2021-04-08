@@ -68,9 +68,10 @@ class Config
 
         // load the api-config
         $this -> api = (object) [
-                    'root'    => getenv('API_ROOT'),
-                    'baseUrl' => getenv('BASE_URL'),
-                    'env'     => getenv('ENV'),
+                    'root'         => getenv('API_ROOT'),
+                    'baseUrl'      => getenv('BASE_URL'),
+                    'baseUrlShort' => getenv('BASE_URL_SHORT'),
+                    'env'          => getenv('ENV'),
         ];
 
         // load the databse-config
