@@ -74,6 +74,7 @@ class UrlController extends BaseController
         // define required arguments/values
         $validationFields = [
             ['method' => Core\ValidatedRequest::METHOD_POST, 'field' => 'url', 'type' => Core\ValidatedRequest::TYPE_URL, 'required' => true,],
+            ['method' => Core\ValidatedRequest::METHOD_POST, 'field' => 'force_new', 'type' => Core\ValidatedRequest::TYPE_BOOLEAN, 'required' => false,],
         ];
 
         $validatedRequest = Core\ValidatedRequest::validate($request, $response, $validationFields, $args);
@@ -83,8 +84,22 @@ class UrlController extends BaseController
 
         $filteredInput = $validatedRequest -> getFilteredInput();
 
-        // since it's public, no need to check for existing URL
-        $url = Core\UrlShortener::create($filteredInput['url'], Core\Auth::getUserId());
+
+        if (isset($filteredInput['force_new']) && $filteredInput['force_new']) {
+            $url = null;
+        } else {
+            // check if exact URL is already shortened for this user
+            $url = (new Models\Url) -> findBy(['url' => $filteredInput['url'], 'leadcamp_user_id' => Core\Auth::getUserId()], $take = 1);
+        }
+
+        if (!$url) {
+            // since it's public, no need to check for existing URL
+            $url = Core\UrlShortener::create($filteredInput['url'], Core\Auth::getUserId());
+        }
+
+        // add the final url
+        $url -> addAttribute('target_url_short', Core\Config::getInstance() -> API() -> baseUrlShort . '/' . $url -> getShortCode());
+        $url -> addAttribute('target_url', Core\Config::getInstance() -> API() -> baseUrl . '/' . $url -> getShortCode());
 
         return Core\Output::OK($response, $url);
     }
