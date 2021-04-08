@@ -16,19 +16,18 @@ $leadcampApi = function ($request, $response, callable $next) {
     // get the auth-token from the request headers
     $token = Core\Auth::getBearerToken();
 
-    $remoteAddress = Core\Auth::getRemoteAddress();
-
-    $whitelist = [];
-    if (Core\Config::getInstance() -> API() -> env == 'dev') {
-        $whitelist = ['127.0.0.1', '::1'];
-    } else {
-        $whitelist = ['83.217.78.250'];
-    }
-
-    if (!in_array($remoteAddress, $whitelist)) {
-        return Core\Output::NotAuthorized($response, "Unauthorized origin.");
-    }
-
+//    $remoteAddress = Core\Auth::getRemoteAddress();
+//
+//    $whitelist = [];
+//    if (Core\Config::getInstance() -> API() -> env == 'dev') {
+//        $whitelist = ['127.0.0.1', '::1'];
+//    } else {
+//        $whitelist = ['83.217.78.250'];
+//    }
+//
+//    if (!in_array($remoteAddress, $whitelist)) {
+//        return Core\Output::NotAuthorized($response, "Unauthorized origin.");
+//    }
     // check if there's even a token present
     if ($token) {
 
