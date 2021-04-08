@@ -64,7 +64,12 @@ class Url extends BaseModel
         $clicks = UrlRequest::getClicksForUrlId($this -> getId());
 
         // append to url
-        $url = $this -> getUrl() . (parse_url($this -> getUrl(), PHP_URL_QUERY) ? '&' : '?') . 'first=' . ($clicks > 0 ? 'true' : 'false');
+        $url = $this -> getUrl() . (parse_url($this -> getUrl(), PHP_URL_QUERY) ? '&' : '?') . 'first=' . ($clicks == 0 ? 'true' : 'false');
+
+        // check if url has protocol
+        $url = $this -> addScheme($url);
+
+        // set the url for future use
         $this -> setUrl($url);
 
 //        if ($this -> getBrowserDetect()) {
@@ -104,6 +109,11 @@ class Url extends BaseModel
         }
 //        }
         exit();
+    }
+
+    private function addScheme(string $url, string $scheme = 'https://')
+    {
+        return parse_url($url, PHP_URL_SCHEME) === null ? $scheme . $url : $url;
     }
 
     /**

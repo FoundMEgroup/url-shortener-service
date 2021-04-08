@@ -68,7 +68,7 @@ class UrlRequest extends BaseModel
             SELECT COUNT(*) as clicks FROM url_requests WHERE url_id = " . Core\Database::escape($urlId) . ";
             ";
         $result = Core\Database::query($query);
-        return (int) $result -> fetch_assoc()['clicks'] ?? 0;
+        return (int) ($result -> fetch_assoc())['clicks'] ?? 0;
     }
 
     /**
