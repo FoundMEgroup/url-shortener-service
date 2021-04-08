@@ -53,11 +53,9 @@ class Url extends BaseModel
     /**
      * Redirect to the URL and exit script
      *
-     * @param UrlRequest $urlRequest The URL Request to use for the tracker
-     *
      * @return void
      */
-    public function redirectToUrl(UrlRequest $urlRequest): void
+    public function redirectToUrl(): void
     {
 
         // get ptotal amount of clicks

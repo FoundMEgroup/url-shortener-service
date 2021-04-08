@@ -53,10 +53,14 @@ class UrlController extends BaseController
             return Core\Output::ModelNotFound($response, 'Url', $filteredInput['code'], 'code');
         }
 
-        $urlRequest = Models\UrlRequest::init($url -> getId());
+        // check if it's a bot/preview thingy
+        $ua = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        if (!Models\UrlRequest::isRequestFromBot($ua)) {
+            $urlRequest = Models\UrlRequest::init($url -> getId());
+        }
 
         // url found, code exits.. do redirecting magic
-        $url -> redirectToUrl($urlRequest);
+        $url -> redirectToUrl();
     }
 
     /**

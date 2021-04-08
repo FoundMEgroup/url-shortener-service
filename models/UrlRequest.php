@@ -26,6 +26,62 @@ class UrlRequest extends BaseModel
     const VALIDATION = [];
     // list of updatable fields
     const UPDATABLE = [];
+    const BOT_USER_AGENTS = [
+        "360Spider",
+        "AdsBot",
+        "adidxbot",
+        "Applebot",
+        "AppleNewsBot",
+        "Baiduspider",
+        "bingbot",
+        "BingPreview",
+        "BublupBot",
+        "CCBot",
+        "Cliqzbot",
+        "coccoc",
+        "coccocbot",
+        "Daumoa",
+        "Dazoobot",
+        "DeuSu",
+        "DuckDuckBot",
+        "DuckDuckGo-Favicons-Bot",
+        "EuripBot",
+        "Exploratodo",
+        "Facebot",
+        "facebook",
+        "Feedly",
+        "Findxbot",
+        "Googlebot",
+        "HaoSouSpider",
+        "ichiro",
+        "istellabot",
+        "JikeSpider",
+        "Lycos",
+        "Mail.Ru",
+        "Mediapartners-Google",
+        "MojeekBot",
+        "msnbot",
+        "OrangeBot",
+        "Pinterest",
+        "Plukkie",
+        "Qwantify",
+        "Rambler",
+        "SeznamBot",
+        "Sosospider",
+        "Slackbot",
+        "Slurp",
+        "Sogou",
+        "SputnikBot",
+        "Teoma",
+        "Twitterbot",
+        "wotbox",
+        "yacybot",
+        "Yandex",
+        "Yeti",
+        "YioopBot",
+        "yoozBot",
+        "YoudaoBot",
+    ];
 
     /**
      * Url ID
@@ -69,6 +125,26 @@ class UrlRequest extends BaseModel
             ";
         $result = Core\Database::query($query);
         return (int) ($result -> fetch_assoc())['clicks'] ?? 0;
+    }
+
+    /**
+     * Check if given User Agent would be from a bot/rich preview
+     *
+     * @param string $ua
+     * 
+     * @return boolean
+     */
+    public static function isRequestFromBot(string $ua = null)
+    {
+        if (!$ua) {
+            return false;
+        }
+
+        foreach (self::BOT_USER_AGENTS as $ua) {
+            if (stripos($ua, $ua) !== false)
+                return true;
+        }
+        return false;
     }
 
     /**
