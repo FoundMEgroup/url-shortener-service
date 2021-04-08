@@ -18,7 +18,7 @@ Make a `POST` request to the `/urls` endpoint with the following payload:
 `Authorization: Bearer <leadcamp-user-token>`
 
 **Body**:
-```json
+```
 {
 	// The full URL you want to shorten (up to 1024 characters)
 	"url": "your-url-to-shorten",
