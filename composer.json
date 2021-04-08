@@ -5,9 +5,9 @@
     "require": {
         "vlucas/phpdotenv": "^4.0@dev",
         "zendframework/zend-diactoros": "dev-release-1.8",
-        "league/route": "3.x-dev",
-        "hashids/hashids": "^4.0@dev",
-        "php": "^7.3.12"
+        "league/route": "3.1.0",
+        "hashids/hashids": "2.0.4",
+        "php": "^7.1.26"
     },
     "license": "MIT",
     "authors": [
