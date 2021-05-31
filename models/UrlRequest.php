@@ -131,7 +131,7 @@ class UrlRequest extends BaseModel
      * Check if given User Agent would be from a bot/rich preview
      *
      * @param string $ua
-     * 
+     *
      * @return boolean
      */
     public static function isRequestFromBot(string $ua = null)
@@ -140,8 +140,8 @@ class UrlRequest extends BaseModel
             return false;
         }
 
-        foreach (self::BOT_USER_AGENTS as $ua) {
-            if (stripos($ua, $ua) !== false)
+        foreach (self::BOT_USER_AGENTS as $userAgent) {
+            if (stripos($ua, $userAgent) !== false)
                 return true;
         }
         return false;

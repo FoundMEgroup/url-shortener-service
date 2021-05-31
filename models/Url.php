@@ -87,6 +87,7 @@ class Url extends BaseModel
             header('Connection: close');
             ob_start();
             header('Content-Length: 0');
+            header("HTTP/1.1 301 Moved Permanently");
             header("Location: {$this -> getUrl()}");
             ob_end_flush();
             flush();

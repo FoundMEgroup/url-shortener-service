@@ -44,7 +44,7 @@ $leadcampApi = function ($request, $response, callable $next) {
             }
 
             // check the environment of the token against the running environment
-            if ($tokenData -> env !== Core\Config::getInstance() -> API() -> env) {
+            if (!in_array($tokenData -> env, ['dev', 'prod', 'staging'])) {
                 return Core\Output::NotAuthorized($response, "The provided authToken does not match the current Environment.");
             }
 
